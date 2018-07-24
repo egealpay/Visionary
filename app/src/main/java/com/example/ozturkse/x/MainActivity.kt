@@ -2,15 +2,13 @@ package com.example.ozturkse.x
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import butterknife.ButterKnife
-import butterknife.OnClick
+
 import io.fotoapparat.Fotoapparat
 import io.fotoapparat.FotoapparatSwitcher
 import io.fotoapparat.facedetector.processor.FaceDetectorProcessor
 import io.fotoapparat.parameter.selector.LensPositionSelectors.back
 import io.fotoapparat.parameter.selector.LensPositionSelectors.front
 import kotlinx.android.synthetic.main.activity_main.*
-
 
 
 class MainActivity : AppCompatActivity() {
@@ -28,12 +26,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        ButterKnife.bind(this)
-
         createProcessor()
         createFotoApparat()
 
         fotoapparatSwitcher = FotoapparatSwitcher.withDefault(fotoapparatBack)  //For switching between back & front camera
+
+        activity_main_button_switchcamera.setOnClickListener { switchCamera() }
     }
 
     private fun createProcessor() {
@@ -60,7 +58,6 @@ class MainActivity : AppCompatActivity() {
                 .build()
     }
 
-    @OnClick(R.id.activity_main_button_switchcamera)
     fun switchCamera() {
         if (fotoapparatSwitcher.currentFotoapparat == fotoapparatFront) {
             fotoapparatSwitcher.switchTo(fotoapparatBack)

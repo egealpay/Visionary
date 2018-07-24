@@ -2,7 +2,6 @@ package com.example.ozturkse.x.network
 
 import okhttp3.Interceptor
 import okhttp3.Response
-import java.util.*
 
 class ApiParameterInterceptor : Interceptor {
 

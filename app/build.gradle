@@ -4,7 +4,6 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
-apply plugin: 'kotlin-kapt'
 
 
 android {
@@ -38,8 +37,6 @@ dependencies {
     implementation 'io.fotoapparat.fotoapparat:library:1.5.0'
     implementation 'io.fotoapparat:facedetector:1.0.0'
 
-    implementation 'com.jakewharton:butterknife:8.8.1'
-    kapt 'com.jakewharton:butterknife-compiler:8.8.1'
 
     // network
     implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
