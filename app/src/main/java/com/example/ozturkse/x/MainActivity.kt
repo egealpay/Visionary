@@ -51,14 +51,12 @@ class MainActivity : AppCompatActivity() {
                 .into(cameraView)
                 .frameProcessor(processor)
                 .lensPosition(back())
-                // the rest of configuration
                 .build()
 
         fotoapparatFront = Fotoapparat.with(this)
                 .into(cameraView)
                 .frameProcessor(processor)
                 .lensPosition(front())
-                // the rest of configuration
                 .build()
     }
 
