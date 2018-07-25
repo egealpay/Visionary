@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
 
         fotoapparatSwitcher = FotoapparatSwitcher.withDefault(fotoapparatBack)  //For switching between back & front camera
 
-        activity_main_button_switchcamera.setOnClickListener { switchCamera() }
+        activity_main_imagebutton_switchcamera.setOnClickListener { switchCamera() }
     }
 
     private fun createProcessor() {

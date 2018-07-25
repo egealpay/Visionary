@@ -6,9 +6,10 @@ import com.example.ozturkse.x.network.NetworkModule
 interface FaceRecognitionApiService {
 
     companion object {
+        val baseUrl = "https://api"
+        val network = NetworkModule(baseUrl)
+
         fun create(): FaceRecognitionApiService {
-            val baseUrl = "https://api.themoviedb.org/3/"
-            val network = NetworkModule(baseUrl)
             return network.retrofit.create(FaceRecognitionApiService::class.java)
         }
     }
