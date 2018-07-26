@@ -10,5 +10,5 @@
 
 backend/train
 backend/test
-backend/trained_knn_model.clf
+backend/knn/trained_knn_model.clf
 
