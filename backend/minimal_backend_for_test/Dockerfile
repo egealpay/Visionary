@@ -11,7 +11,7 @@ COPY . /root/minimal_backend_for_test
 RUN cd /root/minimal_backend_for_test && \
     pip3 install -r requirements.txt
 
-    # tell the port number the container should expose
+# tell the port number the container should expose
 EXPOSE 5000
 
 # run the application
