@@ -6,3 +6,9 @@
 /build
 /captures
 .externalNativeBuild
+
+
+backend/train
+backend/test
+backend/trained_knn_model.clf
+

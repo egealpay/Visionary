@@ -1,0 +1,4 @@
+eve
+face_recognition
+Pillow
+scikit-learn
