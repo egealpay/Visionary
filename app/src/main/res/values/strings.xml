@@ -1,4 +1,9 @@
 <resources>
-    <string name="app_name">PokerFace</string>
+    <string name="app_name">FaceX</string>
     <string name="switch_camera">Switch Camera</string>
+    <string name="welcome">Welcome to FaceX</string>
+    <string name="fullname_hint">Fullname</string>
+    <string name="add_photos">Please choose at least 2 photos of your face</string>
+    <string name="choose_photos">Choose</string>
+    <string name="register">Register</string>
 </resources>

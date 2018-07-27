@@ -1,8 +1,8 @@
-package com.example.ozturkse.x
+package com.example.ozturkse.x.ui
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-
+import android.support.v7.app.AppCompatActivity
+import com.example.ozturkse.x.R
 import io.fotoapparat.Fotoapparat
 import io.fotoapparat.FotoapparatSwitcher
 import io.fotoapparat.facedetector.processor.FaceDetectorProcessor
@@ -20,7 +20,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var fotoapparatSwitcher: FotoapparatSwitcher
 
     private lateinit var processor: FaceDetectorProcessor
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

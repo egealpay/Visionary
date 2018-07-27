@@ -8,7 +8,10 @@
 .externalNativeBuild
 
 
-backend/train
-backend/test
+backend/knn/training_images
+backend/knn/test_images
 backend/knn/trained_knn_model.clf
+build
+venv
+
 
