@@ -7,9 +7,9 @@ from knn.train_model import get_knn_model
 if __name__ == "__main__":
 
     # locations
-    train_dir = "knn/training_images"
-    test_dir = "knn/test_images"
-    model_path = "knn/trained_knn_model.clf"
+    train_dir = "classifier/training_images"
+    test_dir = "classifier/test_images"
+    model_path = "classifier/trained_knn_model.clf"
 
     # read or train model file
     model = get_knn_model(model_path, train_dir)

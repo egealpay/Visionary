@@ -1,4 +1,5 @@
-flask
+flask-restful
 face_recognition
-Pillow
+gunicorn
 scikit-learn
+celery
