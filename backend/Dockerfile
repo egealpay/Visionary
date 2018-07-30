@@ -34,10 +34,10 @@ RUN cd ~ && \
     python3 setup.py install --yes USE_AVX_INSTRUCTIONS
 
 # copy files required for the app to run
-COPY . /root/poker-face-api
+COPY . /root/backend
 # install python API requirements
-RUN cd /root/poker-face-api && \
+RUN cd /root/backend && \
     pip3 install -r requirements.txt
 # run the application
-CMD cd /root/poker-face-api && \
-    python3 api.py
+CMD cd /root/backend && \
+    python3 server.py

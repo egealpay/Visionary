@@ -1,5 +1,3 @@
-flask-restful
+sanic
 face_recognition
 gunicorn
-scikit-learn
-celery

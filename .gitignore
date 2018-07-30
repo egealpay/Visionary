@@ -13,5 +13,5 @@ backend/knn/test_images
 backend/knn/trained_knn_model.clf
 build
 venv
-
+__init__.py
 

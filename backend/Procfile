@@ -1,1 +1,2 @@
-web: gunicorn api:app --timeout 10 --max-requests 1200 --log-file -
+worker: celery worker --app=tasks.app
+web: gunicorn server:app --bind 0.0.0.0:1337 --worker-class sanic.worker.GunicornWorker --timeout 10 --max-requests 1200 --log-file -
