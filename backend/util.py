@@ -10,21 +10,32 @@ allowed_extensions = {'png', 'jpg', 'jpeg'}
 
 
 def get_known_faces():
+    known_faces = {}
+
     if os.path.exists(model_path):
-        with open(model_path, 'rb') as f:
-            known_faces = pickle.load(f)
-    else:
-        known_faces = {}
+        try:
+            with open(model_path, 'rb') as f:
+                known_faces = pickle.load(f)
+        except IOError as e:
+            print(e)
+
     return known_faces
 
 
 def save_dict(updated_known_faces):
-    with open(model_path, 'wb') as f:
-        pickle.dump(updated_known_faces, f, protocol=pickle.HIGHEST_PROTOCOL)
+    try:
+        with open(model_path, 'wb') as f:
+            pickle.dump(updated_known_faces, f, protocol=pickle.HIGHEST_PROTOCOL)
+    except IOError as e:
+        print(e)
 
 
 def get_face_encoding(photo):
-    stream = BytesIO(photo.body)
-    photo_array = face_recognition.load_image_file(stream)
-    face_encoding = face_recognition.face_encodings(photo_array)[0]
+    face_encoding = None
+    try:
+        stream = BytesIO(photo.body)
+        photo_array = face_recognition.load_image_file(stream)
+        face_encoding = face_recognition.face_encodings(photo_array)[0]
+    except IndexError as e:  # couldn't locate a face
+        print(e)
     return face_encoding
