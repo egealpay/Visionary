@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class TheFaceRecognitionApiResponse(
 
-        @SerializedName("results")
+        @SerializedName("hello")
         var answer: String?
 
 )

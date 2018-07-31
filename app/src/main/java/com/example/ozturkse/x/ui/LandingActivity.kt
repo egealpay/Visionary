@@ -3,6 +3,7 @@ package com.example.ozturkse.x.ui
 import android.Manifest
 import android.content.Intent
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
@@ -91,8 +92,17 @@ class LandingActivity : AppCompatActivity() {
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         when (requestCode) {
             REQUEST_CAMERA_PERMISSION -> handlePermissionsResult(permissions, grantResults,
-                    onDenied = { Log.d("Go To", "Settings") },
-                    onGranted = { }
+                    onDenied = {
+                        val builder = AlertDialog.Builder(this@LandingActivity)
+                        builder.setTitle(":(")
+                        builder.setMessage("In order to use this app, you should give permission, from Settings!")
+
+                        val dialog: AlertDialog = builder.create()
+                        dialog.show()
+                    },
+                    onGranted = {
+                        EasyImage.openCameraForImage(this, 0)
+                    }
             )
         }
     }
@@ -140,10 +150,6 @@ class LandingActivity : AppCompatActivity() {
 
         if (activity_landing_edittext_fullname.text.toString() != "" && photos.size > 0)
             meet()
-
-        //samplePrefDelegate = true
-        //startActivity(Intent(this, MainActivity::class.java))
-        //finish()
     }
 
     fun meet() {
@@ -166,6 +172,9 @@ class LandingActivity : AppCompatActivity() {
                 .subscribe(
                         { result ->
                             Toast.makeText(this, result.answer, Toast.LENGTH_LONG).show()
+                            samplePrefDelegate = true
+                            startActivity(Intent(this, MainActivity::class.java))
+                            finish()
                         },
                         { error ->
                             Toast.makeText(this, error.message, Toast.LENGTH_LONG).show()

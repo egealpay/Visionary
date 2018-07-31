@@ -20,7 +20,7 @@
             android:textColor="@android:color/white"
             android:textSize="20sp" />
 
-        <ImageButtonselim
+        <ImageButton
             android:id="@+id/activity_main_imagebutton_switchcamera"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
