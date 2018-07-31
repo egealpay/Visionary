@@ -16,8 +16,11 @@ interface FaceRecognitionApiService {
             @Part("name") name: RequestBody
     ): Observable<TheFaceRecognitionApiResponse>
 
+    @Multipart
     @POST("predict")
-    fun predict(@Body bytes: RequestBody): Observable<PredictionResponse>
+    fun predict(
+            @Part file: MultipartBody.Part
+    ): Observable<PredictionResponse>
 
     companion object {
         val baseUrl = "https://facerecapi.herokuapp.com"

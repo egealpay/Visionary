@@ -4,8 +4,8 @@ import com.google.gson.annotations.SerializedName
 
 data class PredictionResponse(
 
-        @SerializedName("confidence") val confidenceLevel: Double?,
+        @SerializedName("status") val confidenceLevel: Double?,
 
-        @SerializedName("prediction") val prediction: String?
+        @SerializedName("guess") val prediction: String?
 
 )
