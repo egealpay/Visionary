@@ -1,8 +1,9 @@
 from sanic import Sanic
 from sanic.response import json
-from train import train
 import os
 import multiprocessing
+import face_recognition
+from util import get_face_encoding, get_known_faces, save_dict
 
 if 'PORT' in os.environ:
     port = int(os.environ.get('PORT'))
@@ -20,20 +21,29 @@ async def hello(request):
 
 
 @app.route('/meet', methods=['GET', 'POST'])
-async def test(request):
+async def meet(request):
     # get name and photo
     name = request.form.get('name')
     photo = request.files.get('photo')
-    train(name, photo)
+    new_face_encoding = get_face_encoding(photo)
+    known_faces = get_known_faces()
+    known_faces[name] = new_face_encoding
+    save_dict(known_faces)
     return json({'hello': name})
 
 
 @app.route("/predict", methods=['GET', 'POST'])
 async def predict(request):
-    # photo = request.files.get('photo')
-    confidence = 0.423423
-    person_name = "James Bond"
-    response = {"prediction": person_name, "confidence": confidence}
+    guess = 'no one'
+    photo = request.files.get('photo')
+    unknown_face_encoding = get_face_encoding(photo)
+    known_faces = get_known_faces()
+    for name, face_encoding in known_faces.items():
+        is_found = face_recognition.compare_faces([face_encoding], unknown_face_encoding, tolerance=0.6)
+        if is_found:
+            guess = name
+            break
+    response = {"guess": guess}
     return json(response)
 
 

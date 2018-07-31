@@ -8,9 +8,9 @@
 .externalNativeBuild
 
 
-backend/knn/training_images
-backend/knn/test_images
-backend/knn/trained_knn_model.clf
+backend/classifier/training_images
+backend/classifier/test_images
+backend/classifier/known_faces
 build
 venv
 __init__.py

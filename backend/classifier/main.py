@@ -1,8 +1,8 @@
 from face_recognition.face_recognition_cli import image_files_in_folder
 
-from knn.predict import predict
-from knn.show_results import show_prediction_labels_on_image
-from knn.train_model import get_knn_model
+from classifier.predict import predict
+from classifier.show_results import show_prediction_labels_on_image
+from classifier.train_classifier import get_knn_model
 
 if __name__ == "__main__":
 
