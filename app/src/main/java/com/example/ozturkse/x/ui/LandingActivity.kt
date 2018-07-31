@@ -7,6 +7,7 @@ import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import com.example.ozturkse.x.R
 import com.example.ozturkse.x.api.FaceRecognitionApiService
@@ -147,12 +148,13 @@ class LandingActivity : AppCompatActivity() {
     }
 
     fun register() {
-
         if (activity_landing_edittext_fullname.text.toString() != "" && photos.size > 0)
             meet()
     }
 
     fun meet() {
+        activity_landing_progressbar.visibility = View.VISIBLE
+
         val file = photos[0]
 
         val photo = MultipartBody.Part.createFormData(

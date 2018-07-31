@@ -21,8 +21,17 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import okhttp3.MediaType
+import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import java.io.File
+import java.io.FileOutputStream
+import java.io.OutputStream
+import android.graphics.Bitmap.CompressFormat
+import android.R.attr.bitmap
+import android.view.View
+import io.fotoapparat.photo.BitmapPhoto
 import java.io.ByteArrayOutputStream
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -51,9 +60,11 @@ class MainActivity : AppCompatActivity() {
         createFotoApparat()
         fotoapparatSwitcher = FotoapparatSwitcher.withDefault(fotoapparatBack)  //For switching between back & front camera
 
-        doIfGranted(Manifest.permission.CAMERA, REQUEST_CAMERA_PERMISSION){
-            fotoapparatSwitcher.start()
-            hasStarted = true
+        if (!hasStarted) {
+            doIfGranted(Manifest.permission.CAMERA, REQUEST_CAMERA_PERMISSION) {
+                fotoapparatSwitcher.start()
+                hasStarted = true
+            }
         }
 
         activity_main_imagebutton_switchcamera.setOnClickListener { switchCamera() }
@@ -63,29 +74,47 @@ class MainActivity : AppCompatActivity() {
         processor = FaceDetectorProcessor.with(this)
                 .listener { faces ->
                     rectanglesView.setRectangles(faces)// (Optional) Show detected faces on the view.
-                    if (faces.size > 0) {
+                    if (faces.size > 0 && hasStarted) {
 
                         val photoResult = fotoapparatSwitcher.currentFotoapparat.takePicture()
+
+                        showLoading()
+
                         photoResult
                                 .toBitmap()
                                 .whenAvailable { bitmapPhoto ->
-                                    val stream = ByteArrayOutputStream()
-                                    bitmapPhoto.bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
-                                    val byteArray = stream.toByteArray()
 
-                                    val body: RequestBody = RequestBody.create(
-                                            MediaType.parse("application/octet-stream"),
-                                            byteArray
+                                    val imageFile = bitmapToImage(bitmapPhoto)
+
+                                    val photo = MultipartBody.Part.createFormData(
+                                            "photo",
+                                            imageFile.name,
+                                            RequestBody.create(MediaType.parse("image/*"), imageFile)
                                     )
 
-                                    disposable = apiService.predict(body)
+                                    disposable = apiService.predict(photo)
                                             .subscribeOn(Schedulers.io())
                                             .observeOn(AndroidSchedulers.mainThread())
                                             .subscribe(
                                                     { result ->
-                                                        Toast.makeText(this, result.prediction, Toast.LENGTH_LONG).show()
+                                                        // Toast.makeText(this, result.prediction, Toast.LENGTH_LONG).show()
+
+                                                        activity_main_progressbar.visibility = View.GONE
+                                                        val builder = AlertDialog.Builder(this@MainActivity)
+                                                        builder.setTitle("Result")
+                                                        builder.setMessage(result.prediction)
+                                                        builder.setPositiveButton("OK") { _, _ ->
+                                                            activity_main_cameraoverlaylayout.visibility = View.VISIBLE
+                                                            activity_main_imagebutton_switchcamera.isClickable = true
+                                                            fotoapparatSwitcher.start()
+                                                            hasStarted = true
+                                                        }
+
+                                                        val dialog: AlertDialog = builder.create()
+                                                        dialog.show()
                                                     },
                                                     { error ->
+                                                        dismissLoading()
                                                         Toast.makeText(this, error.message, Toast.LENGTH_LONG).show()
                                                     }
                                             )
@@ -96,18 +125,53 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    fun showLoading() {
+        fotoapparatSwitcher.stop()
+        hasStarted = false
+        activity_main_progressbar.visibility = View.VISIBLE
+        activity_main_cameraoverlaylayout.visibility = View.GONE
+        activity_main_imagebutton_switchcamera.isClickable = false
+    }
+
+    fun dismissLoading() {
+        activity_main_progressbar.visibility = View.GONE
+        activity_main_cameraoverlaylayout.visibility = View.VISIBLE
+        activity_main_imagebutton_switchcamera.isClickable = true
+        fotoapparatSwitcher.start()
+        hasStarted = true
+    }
+
+    fun bitmapToImage(bitmapPhoto: BitmapPhoto): File {
+        val filesDir = applicationContext.filesDir
+        val imageFile = File(filesDir, "rectangleface.jpg")
+        imageFile.createNewFile()
+
+        val bitmap = bitmapPhoto.bitmap
+        val bos = ByteArrayOutputStream()
+        bitmap.compress(CompressFormat.JPEG, 25 /*ignored for PNG*/, bos)
+        val bitmapdata = bos.toByteArray()
+
+        val fos = FileOutputStream(imageFile)
+        fos.write(bitmapdata)
+        fos.flush()
+        fos.close()
+
+        return imageFile
+    }
 
     private fun createFotoApparat() {
         fotoapparatBack = Fotoapparat.with(this)
                 .into(cameraView)
                 .frameProcessor(processor)
                 .lensPosition(back())
+                .jpegQuality(50)
                 .build()
 
         fotoapparatFront = Fotoapparat.with(this)
                 .into(cameraView)
                 .frameProcessor(processor)
                 .lensPosition(front())
+                .jpegQuality(50)
                 .build()
     }
 
@@ -122,7 +186,8 @@ class MainActivity : AppCompatActivity() {
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         when (requestCode) {
             LandingActivity.REQUEST_CAMERA_PERMISSION -> handlePermissionsResult(permissions, grantResults,
-                    onDenied = { val builder = AlertDialog.Builder(this@MainActivity)
+                    onDenied = {
+                        val builder = AlertDialog.Builder(this@MainActivity)
                         builder.setTitle(":(")
                         builder.setMessage("In order to use this app, you should give permission to use camera, from Settings!")
 
@@ -138,10 +203,21 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+        if (!hasStarted) {
+            doIfGranted(Manifest.permission.CAMERA, REQUEST_CAMERA_PERMISSION) {
+                fotoapparatSwitcher.start()
+                hasStarted = true
+            }
+        }
+    }
 
     override fun onStop() {
-        if(hasStarted)
+        if (hasStarted) {
             fotoapparatSwitcher.stop()
+            hasStarted = false
+        }
         super.onStop()
     }
 }
