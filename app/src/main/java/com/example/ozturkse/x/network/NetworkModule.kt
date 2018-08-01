@@ -10,8 +10,8 @@ class NetworkModule(baseUrl: String) {
     val okHttpClient = OkHttpClient.Builder()
             .retryOnConnectionFailure(true)
             .addInterceptor(ApiParameterInterceptor())
-            .readTimeout(60, TimeUnit.SECONDS)
-            .writeTimeout(60, TimeUnit.SECONDS)
+            .readTimeout(100, TimeUnit.SECONDS)
+            .writeTimeout(100, TimeUnit.SECONDS)
             .build()
 
     val retrofit = Retrofit.Builder()

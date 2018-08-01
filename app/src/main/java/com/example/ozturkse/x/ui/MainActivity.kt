@@ -78,13 +78,31 @@ class MainActivity : AppCompatActivity() {
 
                         val photoResult = fotoapparatSwitcher.currentFotoapparat.takePicture()
 
-                        showLoading()
+                        fotoapparatSwitcher.stop()
+                        hasStarted = false
+                        activity_main_progressbar.visibility = View.VISIBLE
+                        activity_main_cameraoverlaylayout.visibility = View.GONE
+                        activity_main_imagebutton_switchcamera.isClickable = false
 
                         photoResult
                                 .toBitmap()
                                 .whenAvailable { bitmapPhoto ->
 
-                                    val imageFile = bitmapToImage(bitmapPhoto)
+                                    val filesDir = applicationContext.filesDir
+                                    val imageFile = File(filesDir, "rectangleface.jpg")
+                                    imageFile.createNewFile()
+
+                                    val bitmap = bitmapPhoto.bitmap
+                                    val bos = ByteArrayOutputStream()
+                                    bitmap.compress(CompressFormat.JPEG, 25 /*ignored for PNG*/, bos)
+                                    val bitmapdata = bos.toByteArray()
+
+                                    val fos = FileOutputStream(imageFile)
+                                    fos.write(bitmapdata)
+                                    fos.flush()
+                                    fos.close()
+
+                                    val size = imageFile.length()
 
                                     val photo = MultipartBody.Part.createFormData(
                                             "photo",
@@ -114,7 +132,11 @@ class MainActivity : AppCompatActivity() {
                                                         dialog.show()
                                                     },
                                                     { error ->
-                                                        dismissLoading()
+                                                        activity_main_progressbar.visibility = View.GONE
+                                                        activity_main_cameraoverlaylayout.visibility = View.VISIBLE
+                                                        activity_main_imagebutton_switchcamera.isClickable = true
+                                                        fotoapparatSwitcher.start()
+                                                        hasStarted = true
                                                         Toast.makeText(this, error.message, Toast.LENGTH_LONG).show()
                                                     }
                                             )
@@ -123,40 +145,6 @@ class MainActivity : AppCompatActivity() {
                 }
                 .build()
 
-    }
-
-    fun showLoading() {
-        fotoapparatSwitcher.stop()
-        hasStarted = false
-        activity_main_progressbar.visibility = View.VISIBLE
-        activity_main_cameraoverlaylayout.visibility = View.GONE
-        activity_main_imagebutton_switchcamera.isClickable = false
-    }
-
-    fun dismissLoading() {
-        activity_main_progressbar.visibility = View.GONE
-        activity_main_cameraoverlaylayout.visibility = View.VISIBLE
-        activity_main_imagebutton_switchcamera.isClickable = true
-        fotoapparatSwitcher.start()
-        hasStarted = true
-    }
-
-    fun bitmapToImage(bitmapPhoto: BitmapPhoto): File {
-        val filesDir = applicationContext.filesDir
-        val imageFile = File(filesDir, "rectangleface.jpg")
-        imageFile.createNewFile()
-
-        val bitmap = bitmapPhoto.bitmap
-        val bos = ByteArrayOutputStream()
-        bitmap.compress(CompressFormat.JPEG, 25 /*ignored for PNG*/, bos)
-        val bitmapdata = bos.toByteArray()
-
-        val fos = FileOutputStream(imageFile)
-        fos.write(bitmapdata)
-        fos.flush()
-        fos.close()
-
-        return imageFile
     }
 
     private fun createFotoApparat() {
