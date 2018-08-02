@@ -1,39 +1,28 @@
-package com.example.ozturkse.x.ui
+package com.example.ozturkse.x.ui.landing
 
 import android.Manifest
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import com.example.ozturkse.x.R
-import com.example.ozturkse.x.api.FaceRecognitionApiService
 import com.example.ozturkse.x.ui.adapter.ImagesAdapter
+import com.example.ozturkse.x.ui.main.MainActivity
 import com.monitise.mea.android.caki.delegates.SharedPrefDelegate
 import com.monitise.mea.android.caki.extensions.doIfGranted
 import com.monitise.mea.android.caki.extensions.handlePermissionsResult
-import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_landing.*
 import pl.aprilapps.easyphotopicker.DefaultCallback
 import pl.aprilapps.easyphotopicker.EasyImage
 import java.io.File
 import java.util.*
 
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposable
-import okhttp3.MediaType
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
-import android.graphics.BitmapFactory
-import android.graphics.Bitmap
-import java.io.ByteArrayOutputStream
-import java.io.FileOutputStream
 
-
-class LandingActivity : AppCompatActivity() {
+class LandingActivity : AppCompatActivity(), LandingView {
 
     companion object {
         const val REQUEST_CAMERA_PERMISSION = 0
@@ -42,18 +31,13 @@ class LandingActivity : AppCompatActivity() {
         private val PHOTOS_KEY = "easy_image_photos_list"
     }
 
-    private val apiService by lazy {
-        FaceRecognitionApiService.create()
-    }
+    val landingPresenter: LandingPresenter = LandingPresenter(this, LandingInteractor())
 
     private var samplePrefDelegate by SharedPrefDelegate(this, KEY_SAMPLE_PREF, DEFAULT_SAMPLE_PREF)
 
     private var imagesAdapter: ImagesAdapter? = null
 
     private var photos = ArrayList<File>()
-
-    private var disposable: Disposable? = null
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -137,6 +121,19 @@ class LandingActivity : AppCompatActivity() {
         })
     }
 
+    override fun showResponse(answer: String?) {
+        Toast.makeText(this, answer, Toast.LENGTH_LONG).show()
+        samplePrefDelegate = true
+        startActivity(Intent(this, MainActivity::class.java))
+        finish()
+    }
+
+    override fun showError(message: String?) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+        activity_landing_linearlayout.visibility = View.VISIBLE
+        activity_landing_progressbar.visibility = View.GONE
+    }
+
     private fun onPhotosReturned(returnedPhotos: List<File>) {
         photos.addAll(returnedPhotos)
         imagesAdapter?.notifyDataSetChanged()
@@ -156,7 +153,7 @@ class LandingActivity : AppCompatActivity() {
     fun register() {
         if (activity_landing_edittext_fullname.text.toString() == "")
             Toast.makeText(applicationContext, "You should specify a name!", Toast.LENGTH_SHORT).show()
-        else if(photos.size == 0)
+        else if (photos.size == 0)
             Toast.makeText(applicationContext, "You should choose photo", Toast.LENGTH_SHORT).show()
         else
             meet()
@@ -169,53 +166,9 @@ class LandingActivity : AppCompatActivity() {
         val file = photos[0]
 
         val bitmap = BitmapFactory.decodeFile(file.path)
-        val aspectRatio = bitmap.width / bitmap.height.toFloat()
-        val width = 480
-        val height = Math.round(width / aspectRatio)
-        val resized = Bitmap.createScaledBitmap(bitmap, width, height, true)
-
         val filesDir = applicationContext.filesDir
-        val imageFile = File(filesDir, "rectangleface.jpg")
-        imageFile.createNewFile()
 
-        val bos = ByteArrayOutputStream()
-        resized.compress(Bitmap.CompressFormat.JPEG, 50 /*ignored for PNG*/, bos)
-        val bitmapdata = bos.toByteArray()
-
-        val fos = FileOutputStream(imageFile)
-        fos.write(bitmapdata)
-        fos.flush()
-        fos.close()
-
-
-        val photo = MultipartBody.Part.createFormData(
-                "photo",
-                imageFile.name,
-                RequestBody.create(MediaType.parse("image/*"), imageFile)
-        )
-
-        val name = RequestBody.create(
-                MediaType.parse("text/plain"),
-                activity_landing_edittext_fullname.text.toString()
-        )
-
-        disposable = apiService.meet(photo, name)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        { result ->
-                            Toast.makeText(this, result.answer, Toast.LENGTH_LONG).show()
-                            samplePrefDelegate = true
-                            startActivity(Intent(this, MainActivity::class.java))
-                            finish()
-                        },
-                        { error ->
-                            Toast.makeText(this, error.message, Toast.LENGTH_LONG).show()
-                            activity_landing_linearlayout.visibility = View.VISIBLE
-                            activity_landing_progressbar.visibility = View.GONE
-
-                        }
-                )
+        landingPresenter.register(activity_landing_edittext_fullname.text.toString(), bitmap, filesDir)
     }
 
 }
