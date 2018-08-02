@@ -94,15 +94,13 @@ class MainActivity : AppCompatActivity() {
 
                                     val bitmap = bitmapPhoto.bitmap
                                     val bos = ByteArrayOutputStream()
-                                    bitmap.compress(CompressFormat.JPEG, 25 /*ignored for PNG*/, bos)
+                                    bitmap.compress(CompressFormat.JPEG, 50 /*ignored for PNG*/, bos)
                                     val bitmapdata = bos.toByteArray()
 
                                     val fos = FileOutputStream(imageFile)
                                     fos.write(bitmapdata)
                                     fos.flush()
                                     fos.close()
-
-                                    val size = imageFile.length()
 
                                     val photo = MultipartBody.Part.createFormData(
                                             "photo",
