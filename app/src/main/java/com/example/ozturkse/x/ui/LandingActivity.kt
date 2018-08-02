@@ -99,6 +99,7 @@ class LandingActivity : AppCompatActivity() {
                         builder.setMessage("In order to use this app, you should give permission, from Settings!")
 
                         val dialog: AlertDialog = builder.create()
+                        dialog.setCanceledOnTouchOutside(false)
                         dialog.show()
                     },
                     onGranted = {

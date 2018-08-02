@@ -88,13 +88,17 @@ class MainActivity : AppCompatActivity() {
                                 .toBitmap()
                                 .whenAvailable { bitmapPhoto ->
 
+                                    val aspectRatio = bitmapPhoto.bitmap.width /  bitmapPhoto.bitmap.height.toFloat()
+                                    val width = 480
+                                    val height = Math.round(width / aspectRatio)
+                                    val resized = Bitmap.createScaledBitmap(bitmapPhoto.bitmap, width, height, true)
+
                                     val filesDir = applicationContext.filesDir
                                     val imageFile = File(filesDir, "rectangleface.jpg")
                                     imageFile.createNewFile()
 
-                                    val bitmap = bitmapPhoto.bitmap
                                     val bos = ByteArrayOutputStream()
-                                    bitmap.compress(CompressFormat.JPEG, 50 /*ignored for PNG*/, bos)
+                                    resized.compress(CompressFormat.JPEG, 50 /*ignored for PNG*/, bos)
                                     val bitmapdata = bos.toByteArray()
 
                                     val fos = FileOutputStream(imageFile)
@@ -118,23 +122,28 @@ class MainActivity : AppCompatActivity() {
                                                         activity_main_progressbar.visibility = View.GONE
                                                         val builder = AlertDialog.Builder(this@MainActivity)
                                                         builder.setTitle("Result")
-                                                        builder.setMessage(result.prediction)
+                                                        builder.setMessage("${result.guess} \n ${result.confidenceLevel}")
                                                         builder.setPositiveButton("OK") { _, _ ->
                                                             activity_main_cameraoverlaylayout.visibility = View.VISIBLE
                                                             activity_main_imagebutton_switchcamera.isClickable = true
-                                                            fotoapparatSwitcher.start()
-                                                            hasStarted = true
+                                                            if (!hasStarted) {
+                                                                fotoapparatSwitcher.start()
+                                                                hasStarted = true
+                                                            }
                                                         }
 
                                                         val dialog: AlertDialog = builder.create()
+                                                        dialog.setCanceledOnTouchOutside(false)
                                                         dialog.show()
                                                     },
                                                     { error ->
                                                         activity_main_progressbar.visibility = View.GONE
                                                         activity_main_cameraoverlaylayout.visibility = View.VISIBLE
                                                         activity_main_imagebutton_switchcamera.isClickable = true
-                                                        fotoapparatSwitcher.start()
-                                                        hasStarted = true
+                                                        if (!hasStarted) {
+                                                            fotoapparatSwitcher.start()
+                                                            hasStarted = true
+                                                        }
                                                         Toast.makeText(this, error.message, Toast.LENGTH_LONG).show()
                                                     }
                                             )
@@ -179,6 +188,7 @@ class MainActivity : AppCompatActivity() {
 
 
                         val dialog: AlertDialog = builder.create()
+                        dialog.setCanceledOnTouchOutside(false)
                         dialog.show()
                     },
                     onGranted = {
