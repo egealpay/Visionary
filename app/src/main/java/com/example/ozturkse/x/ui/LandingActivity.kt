@@ -27,6 +27,11 @@ import io.reactivex.disposables.Disposable
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import android.graphics.BitmapFactory
+import android.graphics.Bitmap
+import java.io.ByteArrayOutputStream
+import java.io.FileOutputStream
+
 
 class LandingActivity : AppCompatActivity() {
 
@@ -149,19 +154,44 @@ class LandingActivity : AppCompatActivity() {
     }
 
     fun register() {
-        if (activity_landing_edittext_fullname.text.toString() != "" && photos.size > 0)
+        if (activity_landing_edittext_fullname.text.toString() == "")
+            Toast.makeText(applicationContext, "You should specify a name!", Toast.LENGTH_SHORT).show()
+        else if(photos.size == 0)
+            Toast.makeText(applicationContext, "You should choose photo", Toast.LENGTH_SHORT).show()
+        else
             meet()
     }
 
     fun meet() {
         activity_landing_progressbar.visibility = View.VISIBLE
+        activity_landing_linearlayout.visibility = View.GONE
 
         val file = photos[0]
 
+        val bitmap = BitmapFactory.decodeFile(file.path)
+        val aspectRatio = bitmap.width / bitmap.height.toFloat()
+        val width = 480
+        val height = Math.round(width / aspectRatio)
+        val resized = Bitmap.createScaledBitmap(bitmap, width, height, true)
+
+        val filesDir = applicationContext.filesDir
+        val imageFile = File(filesDir, "rectangleface.jpg")
+        imageFile.createNewFile()
+
+        val bos = ByteArrayOutputStream()
+        resized.compress(Bitmap.CompressFormat.JPEG, 50 /*ignored for PNG*/, bos)
+        val bitmapdata = bos.toByteArray()
+
+        val fos = FileOutputStream(imageFile)
+        fos.write(bitmapdata)
+        fos.flush()
+        fos.close()
+
+
         val photo = MultipartBody.Part.createFormData(
                 "photo",
-                file.name,
-                RequestBody.create(MediaType.parse("image/*"), file)
+                imageFile.name,
+                RequestBody.create(MediaType.parse("image/*"), imageFile)
         )
 
         val name = RequestBody.create(
@@ -181,6 +211,9 @@ class LandingActivity : AppCompatActivity() {
                         },
                         { error ->
                             Toast.makeText(this, error.message, Toast.LENGTH_LONG).show()
+                            activity_landing_linearlayout.visibility = View.VISIBLE
+                            activity_landing_progressbar.visibility = View.GONE
+
                         }
                 )
     }

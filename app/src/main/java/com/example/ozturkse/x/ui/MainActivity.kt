@@ -52,6 +52,8 @@ class MainActivity : AppCompatActivity() {
         FaceRecognitionApiService.create()
     }
 
+    private var requestSent = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -74,21 +76,19 @@ class MainActivity : AppCompatActivity() {
         processor = FaceDetectorProcessor.with(this)
                 .listener { faces ->
                     rectanglesView.setRectangles(faces)// (Optional) Show detected faces on the view.
-                    if (faces.size > 0 && hasStarted) {
+                    if (faces.size > 0 && hasStarted && !requestSent) {
+
+                        requestSent = true
 
                         val photoResult = fotoapparatSwitcher.currentFotoapparat.takePicture()
 
-                        fotoapparatSwitcher.stop()
-                        hasStarted = false
                         activity_main_progressbar.visibility = View.VISIBLE
-                        activity_main_cameraoverlaylayout.visibility = View.GONE
-                        activity_main_imagebutton_switchcamera.isClickable = false
 
                         photoResult
                                 .toBitmap()
                                 .whenAvailable { bitmapPhoto ->
 
-                                    val aspectRatio = bitmapPhoto.bitmap.width /  bitmapPhoto.bitmap.height.toFloat()
+                                    val aspectRatio = bitmapPhoto.bitmap.width / bitmapPhoto.bitmap.height.toFloat()
                                     val width = 480
                                     val height = Math.round(width / aspectRatio)
                                     val resized = Bitmap.createScaledBitmap(bitmapPhoto.bitmap, width, height, true)
@@ -119,17 +119,12 @@ class MainActivity : AppCompatActivity() {
                                                     { result ->
                                                         // Toast.makeText(this, result.prediction, Toast.LENGTH_LONG).show()
 
-                                                        activity_main_progressbar.visibility = View.GONE
+                                                        activity_main_progressbar.visibility = View.INVISIBLE
                                                         val builder = AlertDialog.Builder(this@MainActivity)
                                                         builder.setTitle("Result")
                                                         builder.setMessage("${result.guess} \n ${result.confidenceLevel}")
                                                         builder.setPositiveButton("OK") { _, _ ->
-                                                            activity_main_cameraoverlaylayout.visibility = View.VISIBLE
-                                                            activity_main_imagebutton_switchcamera.isClickable = true
-                                                            if (!hasStarted) {
-                                                                fotoapparatSwitcher.start()
-                                                                hasStarted = true
-                                                            }
+                                                            requestSent = false
                                                         }
 
                                                         val dialog: AlertDialog = builder.create()
@@ -137,13 +132,8 @@ class MainActivity : AppCompatActivity() {
                                                         dialog.show()
                                                     },
                                                     { error ->
-                                                        activity_main_progressbar.visibility = View.GONE
-                                                        activity_main_cameraoverlaylayout.visibility = View.VISIBLE
-                                                        activity_main_imagebutton_switchcamera.isClickable = true
-                                                        if (!hasStarted) {
-                                                            fotoapparatSwitcher.start()
-                                                            hasStarted = true
-                                                        }
+                                                        activity_main_progressbar.visibility = View.INVISIBLE
+                                                        requestSent = false
                                                         Toast.makeText(this, error.message, Toast.LENGTH_LONG).show()
                                                     }
                                             )
