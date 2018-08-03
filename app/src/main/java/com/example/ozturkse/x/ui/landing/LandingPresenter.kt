@@ -16,9 +16,10 @@ class LandingPresenter(
         landingView?.showError(error)
     }
 
-    fun register(fullname: String, bitmap: Bitmap, filesDir: File) {
+    fun register(fullname: String, bitmap: Bitmap, filesDir: File, angleToRotate: Float) {
         val resized = Util.compressImage(bitmap)
-        val imageFile = Util.bitmapToFile(resized, filesDir)
+        val rotatedBitmap = Util.rotateImage(resized, angleToRotate)
+        val imageFile = Util.bitmapToFile(rotatedBitmap, filesDir)
 
         landingInteractor.registerRequest(this, fullname, imageFile)
     }

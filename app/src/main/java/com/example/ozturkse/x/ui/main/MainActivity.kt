@@ -70,8 +70,9 @@ class MainActivity : AppCompatActivity(), MainView {
                         photoResult
                                 .toBitmap()
                                 .whenAvailable { bitmapPhoto ->
+                                    val angleToRotate = bitmapPhoto.rotationDegrees
                                     val filesDir = applicationContext.filesDir
-                                    mainPresenter.recognizeFace(bitmapPhoto, filesDir)
+                                    mainPresenter.recognizeFace(bitmapPhoto, filesDir, angleToRotate.toFloat())
                                 }
                     }
                 }

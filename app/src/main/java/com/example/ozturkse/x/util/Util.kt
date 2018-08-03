@@ -2,9 +2,13 @@ package com.example.ozturkse.x.util
 
 import android.graphics.Bitmap
 import android.graphics.Matrix
+import android.support.media.ExifInterface
+import android.util.Log
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
+import java.io.IOException
+
 
 object Util {
 
@@ -32,14 +36,39 @@ object Util {
         return imageFile
     }
 
-    fun rotateImage(bitmap: Bitmap): Bitmap {
+
+    fun rotateImage(source: Bitmap, angle: Float): Bitmap {
         val matrix = Matrix()
-        matrix.postRotate(90f)
-
-        val scaledBitmap = Bitmap.createScaledBitmap(bitmap, bitmap.width, bitmap.height, true)
-        val rotatedBitmap = Bitmap.createBitmap(scaledBitmap, 0, 0, scaledBitmap.width, scaledBitmap.height, matrix, true)
-
-        return rotatedBitmap
+        matrix.postRotate(angle)
+        return Bitmap.createBitmap(source, 0, 0, source.width, source.height, matrix, true)
     }
+
+
+    fun getCameraPhotoOrientation(imageFilePath: String): Int {
+        var rotate = 0
+        try {
+
+            val exif: ExifInterface
+
+            exif = ExifInterface(imageFilePath)
+            val exifOrientation = exif
+                    .getAttribute(ExifInterface.TAG_ORIENTATION)
+            Log.d("exifOrientation", exifOrientation)
+            val orientation = exif.getAttributeInt(
+                    ExifInterface.TAG_ORIENTATION,
+                    ExifInterface.ORIENTATION_NORMAL)
+
+            when (orientation) {
+                ExifInterface.ORIENTATION_ROTATE_270 -> rotate = 270
+                ExifInterface.ORIENTATION_ROTATE_180 -> rotate = 180
+                ExifInterface.ORIENTATION_ROTATE_90 -> rotate = 90
+            }
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+
+        return rotate
+    }
+
 
 }

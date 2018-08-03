@@ -17,9 +17,9 @@ class MainPresenter(
         mainView?.showError(message)
     }
 
-    fun recognizeFace(bitmapPhoto: BitmapPhoto, filesDir: File) {
+    fun recognizeFace(bitmapPhoto: BitmapPhoto, filesDir: File, angleToRotate: Float) {
         val resized = Util.compressImage(bitmapPhoto.bitmap)
-        val rotatedBitmap = Util.rotateImage(resized)
+        val rotatedBitmap = Util.rotateImage(resized, 360f - angleToRotate)
         val imageFile = Util.bitmapToFile(rotatedBitmap, filesDir)
 
         mainInteractor.recognizeFaceRequest(this, imageFile)

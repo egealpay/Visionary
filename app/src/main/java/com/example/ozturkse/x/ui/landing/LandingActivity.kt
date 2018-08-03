@@ -12,7 +12,7 @@ import android.widget.Toast
 import com.example.ozturkse.x.R
 import com.example.ozturkse.x.ui.adapter.ImagesAdapter
 import com.example.ozturkse.x.ui.main.MainActivity
-import com.monitise.mea.android.caki.delegates.SharedPrefDelegate
+import com.example.ozturkse.x.util.Util
 import com.monitise.mea.android.caki.extensions.doIfGranted
 import com.monitise.mea.android.caki.extensions.handlePermissionsResult
 import kotlinx.android.synthetic.main.activity_landing.*
@@ -155,11 +155,12 @@ class LandingActivity : AppCompatActivity(), LandingView {
         activity_landing_linearlayout.visibility = View.GONE
 
         val file = photos[0]
+        val angleToRotate = Util.getCameraPhotoOrientation(file.absolutePath)
 
         val bitmap = BitmapFactory.decodeFile(file.path)
         val filesDir = applicationContext.filesDir
 
-        landingPresenter.register(activity_landing_edittext_fullname.text.toString(), bitmap, filesDir)
+        landingPresenter.register(activity_landing_edittext_fullname.text.toString(), bitmap, filesDir, angleToRotate.toFloat())
     }
 
     override fun onBackPressed() {
