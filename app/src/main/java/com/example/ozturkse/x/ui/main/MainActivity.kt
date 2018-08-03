@@ -10,6 +10,7 @@ import android.widget.Toast
 import com.example.ozturkse.x.R
 import com.example.ozturkse.x.api.PredictionResponse
 import com.example.ozturkse.x.ui.landing.LandingActivity
+import com.example.ozturkse.x.util.Util
 import com.monitise.mea.android.caki.extensions.doIfGranted
 import com.monitise.mea.android.caki.extensions.handlePermissionsResult
 import io.fotoapparat.Fotoapparat
@@ -18,6 +19,7 @@ import io.fotoapparat.facedetector.processor.FaceDetectorProcessor
 import io.fotoapparat.parameter.selector.LensPositionSelectors.back
 import io.fotoapparat.parameter.selector.LensPositionSelectors.front
 import kotlinx.android.synthetic.main.activity_main.*
+import java.net.InetAddress
 
 
 class MainActivity : AppCompatActivity(), MainView {
@@ -60,20 +62,23 @@ class MainActivity : AppCompatActivity(), MainView {
                 .listener { faces ->
                     rectanglesView.setRectangles(faces)// (Optional) Show detected faces on the view.
                     if (faces.size > 0 && hasStarted && !requestSent) {
+                        if(!Util.isInternetAvailable(applicationContext))
+                            Toast.makeText(applicationContext, "No internet connection", Toast.LENGTH_SHORT).show()
+                        else{
+                            requestSent = true
 
-                        requestSent = true
+                            val photoResult = fotoapparatSwitcher.currentFotoapparat.takePicture()
 
-                        val photoResult = fotoapparatSwitcher.currentFotoapparat.takePicture()
+                            activity_main_progressbar.visibility = View.VISIBLE
 
-                        activity_main_progressbar.visibility = View.VISIBLE
-
-                        photoResult
-                                .toBitmap()
-                                .whenAvailable { bitmapPhoto ->
-                                    val angleToRotate = bitmapPhoto.rotationDegrees
-                                    val filesDir = applicationContext.filesDir
-                                    mainPresenter.recognizeFace(bitmapPhoto, filesDir, angleToRotate.toFloat())
-                                }
+                            photoResult
+                                    .toBitmap()
+                                    .whenAvailable { bitmapPhoto ->
+                                        val angleToRotate = bitmapPhoto.rotationDegrees
+                                        val filesDir = applicationContext.filesDir
+                                        mainPresenter.recognizeFace(bitmapPhoto, filesDir, angleToRotate.toFloat())
+                                    }
+                        }
                     }
                 }
                 .build()

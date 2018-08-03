@@ -1,5 +1,6 @@
 package com.example.ozturkse.x.util
 
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Matrix
 import android.support.media.ExifInterface
@@ -8,6 +9,11 @@ import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
+import java.net.InetAddress
+import android.content.Context.CONNECTIVITY_SERVICE
+import android.net.ConnectivityManager
+
+
 
 
 object Util {
@@ -68,6 +74,11 @@ object Util {
         }
 
         return rotate
+    }
+
+    fun isInternetAvailable(context: Context): Boolean {
+        val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        return cm.activeNetworkInfo != null
     }
 
 

@@ -142,7 +142,9 @@ class LandingActivity : AppCompatActivity(), LandingView {
     }
 
     fun register() {
-        if (activity_landing_edittext_fullname.text.toString() == "")
+        if(!Util.isInternetAvailable(applicationContext))
+            Toast.makeText(applicationContext, "No internet connection", Toast.LENGTH_SHORT).show()
+        else if (activity_landing_edittext_fullname.text.toString() == "")
             Toast.makeText(applicationContext, "You should specify a name!", Toast.LENGTH_SHORT).show()
         else if (photos.size == 0)
             Toast.makeText(applicationContext, "You should choose photo", Toast.LENGTH_SHORT).show()
