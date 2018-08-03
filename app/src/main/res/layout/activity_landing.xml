@@ -36,15 +36,13 @@
             android:id="@+id/activity_landing_edittext_fullname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:layout_marginTop="40dp"
+            android:layout_margin="40dp"
             android:hint="@string/fullname_hint" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:paddingStart="16dp"
+            android:layout_marginStart="40dp"
             android:text="@string/add_photos"
             android:textSize="16sp" />
 
@@ -61,7 +59,7 @@
                 android:layout_marginEnd="16dp"
                 android:layout_marginTop="8dp"
                 android:background="@android:color/transparent"
-                android:src="@drawable/ic_insert_photo_black_32dp" />
+                android:src="@drawable/ic_insert_photo_black" />
 
             <ImageButton
                 android:id="@+id/activity_landing_imagebutton_camera"
@@ -70,7 +68,7 @@
                 android:layout_marginEnd="16dp"
                 android:layout_marginTop="8dp"
                 android:background="@android:color/transparent"
-                android:src="@drawable/ic_camera_alt_black_32dp" />
+                android:src="@drawable/ic_camera_alt_black" />
 
         </LinearLayout>
 
