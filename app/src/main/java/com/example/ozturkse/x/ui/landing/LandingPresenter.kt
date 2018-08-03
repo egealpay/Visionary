@@ -7,7 +7,7 @@ import java.io.File
 class LandingPresenter(
         var landingView: LandingView?,
         val landingInteractor: LandingInteractor
-) : LandingInteractor.onRegisterReceivedListener {
+) : LandingInteractor.OnRegisterReceivedListener {
     override fun onSuccessRegister(answer: String?) {
         landingView?.showResponse(answer)
     }

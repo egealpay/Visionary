@@ -8,9 +8,9 @@ import java.io.File
 class MainPresenter(
         var mainView: MainView?,
         val mainInteractor: MainInteractor
-) : MainInteractor.onFaceRecognitionReceivedListener {
+) : MainInteractor.OnFaceRecognitionReceivedListener {
     override fun onSuccessFaceRecognition(result: PredictionResponse) {
-        mainView?.showReponse(result)
+        mainView?.showResponse(result)
     }
 
     override fun onErrorFaceRecognition(message: String?) {

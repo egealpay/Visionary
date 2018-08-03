@@ -12,7 +12,7 @@ import java.io.File
 
 class LandingInteractor {
 
-    interface onRegisterReceivedListener {
+    interface OnRegisterReceivedListener {
         fun onSuccessRegister(answer: String?)
         fun onErrorRegister(error: String?)
     }
@@ -23,7 +23,7 @@ class LandingInteractor {
         FaceRecognitionApiService.create()
     }
 
-    fun registerRequest(listener: onRegisterReceivedListener, fullname: String, imageFile: File) {
+    fun registerRequest(listener: OnRegisterReceivedListener, fullname: String, imageFile: File) {
         val photo = MultipartBody.Part.createFormData(
                 "photo",
                 imageFile.name,

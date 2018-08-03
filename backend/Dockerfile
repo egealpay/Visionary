@@ -1,7 +1,9 @@
-# base image
+#Grab the latest alpine image
 FROM python:3.6-slim-stretch
+
 # update
 RUN apt-get -y update
+
 # install modules needed for face recognition
 RUN apt-get install -y --fix-missing \
     build-essential \
@@ -33,11 +35,15 @@ RUN cd ~ && \
     cd  dlib/ && \
     python3 setup.py install --yes USE_AVX_INSTRUCTIONS
 
+
 # copy files required for the app to run
-COPY . /root/backend
+COPY . /root/app
+WORKDIR /root/app/webapp
+
 # install python API requirements
-RUN cd /root/backend && \
-    pip3 install -r requirements.txt
-# run the application
-CMD cd /root/backend && \
-    python3 server.py
+RUN pip3 install -r requirements.txt
+
+# Run the app.  CMD is required to run on Heroku
+# $PORT is set by Heroku
+CMD gunicorn --bind 0.0.0.0:$PORT wsgi -k gevent --worker-connections 10 --timeout=20 --max-requests=50 --keep-alive=2
+

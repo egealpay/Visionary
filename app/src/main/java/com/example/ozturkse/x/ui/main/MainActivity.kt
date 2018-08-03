@@ -80,11 +80,11 @@ class MainActivity : AppCompatActivity(), MainView {
 
     }
 
-    override fun showReponse(result: PredictionResponse) {
+    override fun showResponse(result: PredictionResponse) {
         activity_main_progressbar.visibility = View.INVISIBLE
         val builder = AlertDialog.Builder(this@MainActivity)
-        builder.setTitle("Result")
-        builder.setMessage("${result.guess} \n ${result.confidenceLevel}")
+        builder.setTitle("${result.guess}")
+        builder.setMessage("status: ${result.status}")
         builder.setPositiveButton("OK") { _, _ ->
             requestSent = false
         }

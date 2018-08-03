@@ -37,12 +37,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
+            android:layout_marginTop="40dp"
             android:hint="@string/fullname_hint" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
+            android:paddingStart="16dp"
             android:text="@string/add_photos"
             android:textSize="16sp" />
 
@@ -82,12 +84,14 @@
             android:padding="10dp" />
 
         <Button
+            style= "@style/Widget.AppCompat.Button.Colored"
             android:id="@+id/activity_landing_button_register"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:layout_margin="16dp"
-            android:text="@string/register" />
+            android:text="@string/register"
+            />
 
     </LinearLayout>
 

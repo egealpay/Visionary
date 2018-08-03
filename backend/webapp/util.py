@@ -3,9 +3,9 @@ import os
 import pickle
 from io import BytesIO
 
-train_dir = "classifier/training_images"
-test_dir = "classifier/test_images"
-model_path = "classifier/known_faces"
+train_dir = "training_images"
+test_dir = "test_images"
+model_path = "known_faces"
 allowed_extensions = {'png', 'jpg', 'jpeg'}
 
 
@@ -33,7 +33,9 @@ def save_dict(updated_known_faces):
 def get_face_encoding(photo):
     face_encoding = None
     try:
-        stream = BytesIO(photo.body)
+        # stream = BytesIO(photo.body)
+        image_bytes = photo.read()
+        stream = BytesIO(image_bytes)
         photo_array = face_recognition.load_image_file(stream)
         face_encoding = face_recognition.face_encodings(photo_array)[0]
     except IndexError as e:  # couldn't locate a face

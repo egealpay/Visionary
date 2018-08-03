@@ -8,6 +8,6 @@ data class PredictionResponse(
         val guess: String?,
 
         @SerializedName("status")
-        val confidenceLevel: String?
+        val status: String?
 
 )

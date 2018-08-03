@@ -12,7 +12,7 @@ import java.io.File
 
 class MainInteractor {
 
-    interface onFaceRecognitionReceivedListener {
+    interface OnFaceRecognitionReceivedListener {
         fun onSuccessFaceRecognition(result: PredictionResponse)
         fun onErrorFaceRecognition(message: String?)
     }
@@ -23,7 +23,7 @@ class MainInteractor {
         FaceRecognitionApiService.create()
     }
 
-    fun recognizeFaceRequest(listener: onFaceRecognitionReceivedListener, imageFile: File) {
+    fun recognizeFaceRequest(listener: OnFaceRecognitionReceivedListener, imageFile: File) {
         val photo = MultipartBody.Part.createFormData(
                 "photo",
                 imageFile.name,
