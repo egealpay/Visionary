@@ -26,14 +26,11 @@ class LandingActivity : AppCompatActivity(), LandingView {
 
     companion object {
         const val REQUEST_CAMERA_PERMISSION = 0
-        const val KEY_SAMPLE_PREF = "hasRegistered"
         const val DEFAULT_SAMPLE_PREF = false
         private val PHOTOS_KEY = "easy_image_photos_list"
     }
 
     val landingPresenter: LandingPresenter = LandingPresenter(this, LandingInteractor())
-
-    private var samplePrefDelegate by SharedPrefDelegate(this, KEY_SAMPLE_PREF, DEFAULT_SAMPLE_PREF)
 
     private var imagesAdapter: ImagesAdapter? = null
 
@@ -42,11 +39,6 @@ class LandingActivity : AppCompatActivity(), LandingView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_landing)
-
-        if (samplePrefDelegate == true) {
-            startActivity(Intent(this, MainActivity::class.java))
-            finish()
-        }
 
         if (savedInstanceState != null) {
             photos = savedInstanceState.getSerializable(PHOTOS_KEY) as ArrayList<File>
@@ -123,7 +115,6 @@ class LandingActivity : AppCompatActivity(), LandingView {
 
     override fun showResponse(answer: String?) {
         Toast.makeText(this, answer, Toast.LENGTH_LONG).show()
-        samplePrefDelegate = true
         startActivity(Intent(this, MainActivity::class.java))
         finish()
     }
@@ -169,6 +160,12 @@ class LandingActivity : AppCompatActivity(), LandingView {
         val filesDir = applicationContext.filesDir
 
         landingPresenter.register(activity_landing_edittext_fullname.text.toString(), bitmap, filesDir)
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        startActivity(Intent(this, MainActivity::class.java))
+        finish()
     }
 
 }

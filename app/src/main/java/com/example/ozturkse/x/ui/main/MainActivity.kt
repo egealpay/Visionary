@@ -1,6 +1,7 @@
 package com.example.ozturkse.x.ui.main
 
 import android.Manifest
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
@@ -51,6 +52,7 @@ class MainActivity : AppCompatActivity(), MainView {
         }
 
         activity_main_imagebutton_switchcamera.setOnClickListener { switchCamera() }
+        activity_main_imagebutton_adduser.setOnClickListener { addUser() }
     }
 
     private fun createProcessor() {
@@ -121,6 +123,11 @@ class MainActivity : AppCompatActivity(), MainView {
         }
     }
 
+    fun addUser() {
+        startActivity(Intent(this, LandingActivity::class.java))
+        finish()
+    }
+
     override fun onRequestPermissionsResult(
             requestCode: Int,
             permissions: Array<out String>,
@@ -129,23 +136,22 @@ class MainActivity : AppCompatActivity(), MainView {
         when (requestCode) {
             LandingActivity.REQUEST_CAMERA_PERMISSION ->
                 handlePermissionsResult(permissions, grantResults,
-                    onDenied = {
-                        val builder = AlertDialog.Builder(this@MainActivity)
-                        builder.setTitle(":(")
-                        builder.setMessage(
-                                "In order to use this app, you should give permission to use camera, from Settings!"
-                        )
+                        onDenied = {
+                            val builder = AlertDialog.Builder(this@MainActivity)
+                            builder.setTitle(":(")
+                            builder.setMessage(
+                                    "In order to use this app, you should give permission to use camera, from Settings!"
+                            )
 
-
-                        val dialog: AlertDialog = builder.create()
-                        dialog.setCanceledOnTouchOutside(false)
-                        dialog.show()
-                    },
-                    onGranted = {
-                        fotoapparatSwitcher.start()
-                        hasStarted = true
-                    }
-            )
+                            val dialog: AlertDialog = builder.create()
+                            dialog.setCanceledOnTouchOutside(false)
+                            dialog.show()
+                        },
+                        onGranted = {
+                            fotoapparatSwitcher.start()
+                            hasStarted = true
+                        }
+                )
         }
     }
 

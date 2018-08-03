@@ -16,13 +16,13 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="3"
                 android:text="@string/app_name"
                 android:textColor="@android:color/white"
                 android:textSize="20sp" />
@@ -35,11 +35,18 @@
                 android:visibility="invisible" />
 
             <ImageButton
+                android:id="@+id/activity_main_imagebutton_adduser"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_person_add_white_32dp" />
+
+            <ImageButton
                 android:id="@+id/activity_main_imagebutton_switchcamera"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:paddingStart="32dp"
                 android:background="@android:color/transparent"
                 android:src="@drawable/ic_switch_camera_white_32dp" />
 
