@@ -6,12 +6,7 @@
 /build
 /captures
 .externalNativeBuild
-
-
-backend/classifier/training_images
-backend/classifier/test_images
-backend/classifier/known_faces
 build
 venv
-__init__.py
+
 
