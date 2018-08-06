@@ -6,5 +6,5 @@
     <string name="add_photos">Please choose or take a photo of your face</string>
     <string name="choose_photos">Choose</string>
     <string name="register">Register</string>
-    <string name="disclaimer">Your images are not stored</string>
+    <string name="button_continue">CONTINUE</string>
 </resources>

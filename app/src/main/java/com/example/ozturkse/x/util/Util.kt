@@ -3,17 +3,13 @@ package com.example.ozturkse.x.util
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Matrix
+import android.net.ConnectivityManager
 import android.support.media.ExifInterface
 import android.util.Log
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
-import java.net.InetAddress
-import android.content.Context.CONNECTIVITY_SERVICE
-import android.net.ConnectivityManager
-
-
 
 
 object Util {
