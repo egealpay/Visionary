@@ -39,6 +39,7 @@ class MainActivity : AppCompatActivity(), MainView {
     val mainPresenter: MainPresenter = MainPresenter(this, MainInteractor())
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
@@ -47,7 +48,7 @@ class MainActivity : AppCompatActivity(), MainView {
 
         createProcessor()
         createFotoApparat()
-        fotoapparatSwitcher = FotoapparatSwitcher.withDefault(fotoapparatBack)  //For switching between back & front camera
+        fotoapparatSwitcher = FotoapparatSwitcher.withDefault(fotoapparatFront)  //For switching between back & front camera
 
         if (!hasStarted) {
             doIfGranted(Manifest.permission.CAMERA, REQUEST_CAMERA_PERMISSION) {
@@ -72,7 +73,7 @@ class MainActivity : AppCompatActivity(), MainView {
 
                             val photoResult = fotoapparatSwitcher.currentFotoapparat.takePicture()
 
-                            activity_main_progressbar.visibility = View.VISIBLE
+                            showLoading()
 
                             photoResult
                                     .toBitmap()
@@ -88,11 +89,11 @@ class MainActivity : AppCompatActivity(), MainView {
 
     }
 
-    override fun showResponse(result: PredictionResponse) {
+    override fun showResponse(guess: String?) {
         activity_main_progressbar.visibility = View.INVISIBLE
         val builder = AlertDialog.Builder(this@MainActivity)
-        builder.setTitle("${result.guess}")
-        builder.setMessage("status: ${result.status}")
+        builder.setTitle("Result")
+        builder.setMessage(guess)
         builder.setPositiveButton("OK") { _, _ ->
             requestSent = false
         }
@@ -103,7 +104,7 @@ class MainActivity : AppCompatActivity(), MainView {
     }
 
     override fun showError(message: String?) {
-        activity_main_progressbar.visibility = View.INVISIBLE
+        hideLoading()
         requestSent = false
         Toast.makeText(this, message, Toast.LENGTH_LONG).show()
     }
@@ -187,5 +188,13 @@ class MainActivity : AppCompatActivity(), MainView {
     override fun onDestroy() {
         super.onDestroy()
         mainPresenter.onDestroy()
+    }
+
+    override fun showLoading() {
+        activity_main_progressbar.visibility = View.VISIBLE
+    }
+
+    override fun hideLoading() {
+        activity_main_progressbar.visibility = View.INVISIBLE
     }
 }
