@@ -45,5 +45,5 @@ RUN pip3 install -r requirements.txt
 
 # Run the app.  CMD is required to run on Heroku
 # $PORT is set by Heroku
-CMD gunicorn --bind 0.0.0.0:$PORT wsgi -k gevent --worker-connections 10 --timeout=20 --max-requests=50 --keep-alive=2
+CMD gunicorn --bind 0.0.0.0:$PORT wsgi -k gevent --worker-connections=3 --timeout=12 --max-requests=100 --keep-alive=2
 

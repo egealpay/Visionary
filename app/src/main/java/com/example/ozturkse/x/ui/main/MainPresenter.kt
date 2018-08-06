@@ -15,7 +15,7 @@ class MainPresenter(
         if (result.status == "found")
             mainView?.showResponse(result.guess)
         else
-            mainView?.showError(result.guess)
+            mainView?.showError("please try again")
     }
 
     override fun onErrorFaceRecognition(message: String?) {

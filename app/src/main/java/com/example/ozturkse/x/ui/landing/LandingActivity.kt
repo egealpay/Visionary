@@ -61,12 +61,12 @@ class LandingActivity : AppCompatActivity(), LandingView {
 
     fun openCameraActivity() {
         if (activity_landing_edittext_fullname.text.toString().trim() == "") {
-            Toast.makeText(applicationContext, "Please specify a name", Toast.LENGTH_SHORT).show()
+            Toast.makeText(applicationContext, "Please enter your name", Toast.LENGTH_SHORT).show()
             return
         }
 
         val builder = AlertDialog.Builder(this@LandingActivity)
-        builder.setTitle("Hello ${activity_landing_edittext_fullname.text}")
+        builder.setTitle("Welcome ${activity_landing_edittext_fullname.text}")
         builder.setMessage(getString(R.string.photo_not_stored))
         builder.setPositiveButton(getString(R.string.take_selfie)) { _, _ ->
             doIfGranted(Manifest.permission.CAMERA, LandingActivity.REQUEST_CAMERA_PERMISSION) {

@@ -57,7 +57,7 @@ class MainActivity : AppCompatActivity(), MainView {
     override fun showResponse(guess: String?) {
         activity_main_progressbar.visibility = View.INVISIBLE
         val builder = AlertDialog.Builder(this@MainActivity)
-        builder.setTitle("Result")
+        builder.setTitle("Found")
         builder.setMessage(guess)
         builder.setPositiveButton("OK") { _, _ ->
             requestSent = false

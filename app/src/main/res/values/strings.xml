@@ -1,14 +1,10 @@
 <resources>
     <string name="app_name">PokerFace</string>
-    <string name="switch_camera">Switch Camera</string>
-    <string name="welcome">Welcome to PokerFace</string>
     <string name="fullname_hint">Name</string>
-    <string name="add_photos">Please choose or take a photo of your face</string>
     <string name="choose_photos">Choose</string>
     <string name="register">Register</string>
     <string name="button_continue">CONTINUE</string>
     <string name="take_selfie">TAKE A SELFIE</string>
-    <string name="photo_not_stored">Your photo is not stored, It will be deleted in 24h</string>
-    <string name="give_camera_permission">In order to use this app, you should give permission, from Settings!</string>
-
+    <string name="photo_not_stored">Your photo will be deleted in 24 hours.</string>
+    <string name="give_camera_permission">Please give camera permission from Settings</string>
 </resources>
