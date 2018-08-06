@@ -1,7 +1,0 @@
-venv
-build
-.idea
-__pycache__
-known_faces
-test_images
-training_images

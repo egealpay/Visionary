@@ -26,7 +26,7 @@ object Util {
         imageFile.createNewFile()
 
         val bos = ByteArrayOutputStream()
-        resized.compress(Bitmap.CompressFormat.JPEG, 50 /*ignored for PNG*/, bos)
+        resized.compress(Bitmap.CompressFormat.JPEG, 70 /*ignored for PNG*/, bos)
         val bitmapdata = bos.toByteArray()
 
         val fos = FileOutputStream(imageFile)

@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.Toast
 import com.example.ozturkse.x.R
-import com.example.ozturkse.x.api.PredictionResponse
 import com.example.ozturkse.x.ui.landing.LandingActivity
 import com.example.ozturkse.x.util.Util
 import com.monitise.mea.android.caki.extensions.doIfGranted
@@ -92,7 +91,7 @@ class MainActivity : AppCompatActivity(), MainView {
     override fun showResponse(guess: String?) {
         activity_main_progressbar.visibility = View.INVISIBLE
         val builder = AlertDialog.Builder(this@MainActivity)
-        builder.setTitle("Result")
+        builder.setTitle("Found")
         builder.setMessage(guess)
         builder.setPositiveButton("OK") { _, _ ->
             requestSent = false
