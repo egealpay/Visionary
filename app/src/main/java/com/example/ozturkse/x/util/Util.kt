@@ -1,8 +1,7 @@
 package com.example.ozturkse.x.util
 
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.Matrix
+import android.graphics.*
 import android.net.ConnectivityManager
 import android.support.media.ExifInterface
 import android.util.Log
@@ -77,5 +76,21 @@ object Util {
         return cm.activeNetworkInfo != null
     }
 
+    fun toGrayscale(bmpOriginal: Bitmap): Bitmap {
+        val width: Int
+        val height: Int
+        height = bmpOriginal.height
+        width = bmpOriginal.width
+
+        val bmpGrayscale = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565)
+        val c = Canvas(bmpGrayscale)
+        val paint = Paint()
+        val cm = ColorMatrix()
+        cm.setSaturation(0f)
+        val f = ColorMatrixColorFilter(cm)
+        paint.colorFilter = f
+        c.drawBitmap(bmpOriginal, 0f, 0f, paint)
+        return bmpGrayscale
+    }
 
 }

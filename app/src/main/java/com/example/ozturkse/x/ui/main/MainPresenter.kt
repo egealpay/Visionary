@@ -27,7 +27,8 @@ class MainPresenter(
 
         val resized = Util.compressImage(bitmapPhoto.bitmap)
         val rotatedBitmap = Util.rotateImage(resized, 360f - angleToRotate)
-        val imageFile = Util.bitmapToFile(rotatedBitmap, filesDir)
+        val grayScaleBitmap = Util.toGrayscale(rotatedBitmap)
+        val imageFile = Util.bitmapToFile(grayScaleBitmap, filesDir)
 
         mainInteractor.recognizeFaceRequest(this, imageFile)
     }

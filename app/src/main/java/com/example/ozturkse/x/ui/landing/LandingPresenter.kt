@@ -25,7 +25,8 @@ class LandingPresenter(
 
         val resized = Util.compressImage(bitmap)
         val rotatedBitmap = Util.rotateImage(resized, angleToRotate.toFloat())
-        val imageFile = Util.bitmapToFile(rotatedBitmap, filesDir)
+        val grayScaleBitmap = Util.toGrayscale(rotatedBitmap)
+        val imageFile = Util.bitmapToFile(grayScaleBitmap, filesDir)
 
         landingInteractor.registerRequest(this, fullname, imageFile)
     }
