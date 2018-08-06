@@ -10,7 +10,12 @@ class MainPresenter(
         val mainInteractor: MainInteractor
 ) : MainInteractor.OnFaceRecognitionReceivedListener {
     override fun onSuccessFaceRecognition(result: PredictionResponse) {
-        mainView?.showResponse(result)
+        mainView?.hideLoading()
+
+        if (result.status == "found")
+            mainView?.showResponse(result.guess)
+        else
+            mainView?.showError(result.guess)
     }
 
     override fun onErrorFaceRecognition(message: String?) {
@@ -18,6 +23,8 @@ class MainPresenter(
     }
 
     fun recognizeFace(bitmapPhoto: BitmapPhoto, filesDir: File, angleToRotate: Float) {
+        mainView?.showLoading()
+
         val resized = Util.compressImage(bitmapPhoto.bitmap)
         val rotatedBitmap = Util.rotateImage(resized, 360f - angleToRotate)
         val imageFile = Util.bitmapToFile(rotatedBitmap, filesDir)

@@ -143,5 +143,12 @@ class LandingActivity : AppCompatActivity(), LandingView {
         activity_landing_edittext_fullname.visibility = View.VISIBLE
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        if (!sharedPreferences.getBoolean(HAS_REGISTERED_KEY, false))
+            Toast.makeText(applicationContext, "You have not registered yet!", Toast.LENGTH_LONG).show()
+        startActivity(Intent(this, MainActivity::class.java))
+        finish()
+    }
 
 }
