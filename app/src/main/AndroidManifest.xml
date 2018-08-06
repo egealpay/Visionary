@@ -18,7 +18,9 @@
         <activity
             android:name=".ui.main.MainActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".ui.landing.LandingActivity">
+        <activity
+            android:name=".ui.landing.LandingActivity"
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

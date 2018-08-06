@@ -7,4 +7,8 @@
     <string name="choose_photos">Choose</string>
     <string name="register">Register</string>
     <string name="button_continue">CONTINUE</string>
+    <string name="take_selfie">TAKE A SELFIE</string>
+    <string name="photo_not_stored">Your photo is not stored, It will be deleted in 24h</string>
+    <string name="give_camera_permission">In order to use this app, you should give permission, from Settings!</string>
+
 </resources>
