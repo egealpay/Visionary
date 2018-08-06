@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "49851950385",
+    "firebase_url": "https://poker-face-25f7d.firebaseio.com",
+    "project_id": "poker-face-25f7d",
+    "storage_bucket": "poker-face-25f7d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:49851950385:android:7389901e9e07ec97",
+        "android_client_info": {
+          "package_name": "com.example.ozturkse.x"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "49851950385-6ckoitna2j4ukgci4qqa2394gsf1e27t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.ozturkse.x",
+            "certificate_hash": "48344e701f82b1a15dbaf74a04010b93ec185d6a"
+          }
+        },
+        {
+          "client_id": "49851950385-2diqgdbd4p0omug81hmgisev7tfcrrd8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0JuuiMgmGOXsMYtMGyaIlBuyCLQrv39U"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "49851950385-2diqgdbd4p0omug81hmgisev7tfcrrd8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

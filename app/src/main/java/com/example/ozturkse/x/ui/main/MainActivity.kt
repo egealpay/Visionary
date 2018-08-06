@@ -5,20 +5,18 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.View
 import android.widget.Toast
+import com.example.ozturkse.x.CameraSource
+import com.example.ozturkse.x.FaceDetectionProcessor
 import com.example.ozturkse.x.R
-import com.example.ozturkse.x.api.PredictionResponse
 import com.example.ozturkse.x.ui.landing.LandingActivity
-import com.example.ozturkse.x.util.Util
+import com.google.firebase.FirebaseApp
 import com.monitise.mea.android.caki.extensions.doIfGranted
 import com.monitise.mea.android.caki.extensions.handlePermissionsResult
-import io.fotoapparat.Fotoapparat
-import io.fotoapparat.FotoapparatSwitcher
-import io.fotoapparat.facedetector.processor.FaceDetectorProcessor
-import io.fotoapparat.parameter.selector.LensPositionSelectors.back
-import io.fotoapparat.parameter.selector.LensPositionSelectors.front
 import kotlinx.android.synthetic.main.activity_main.*
+import java.io.IOException
 
 
 class MainActivity : AppCompatActivity(), MainView {
@@ -26,12 +24,10 @@ class MainActivity : AppCompatActivity(), MainView {
     companion object {
         const val REQUEST_CAMERA_PERMISSION = 0
         const val INTENT_ADD_USER = "add_user"
+        const val TAG = "MainActivity"
     }
 
-    private lateinit var fotoapparatBack: Fotoapparat
-    private lateinit var fotoapparatFront: Fotoapparat
-    private lateinit var fotoapparatSwitcher: FotoapparatSwitcher
-    private lateinit var processor: FaceDetectorProcessor
+    private var cameraSource: CameraSource? = null
 
     private var hasStarted: Boolean = false
     private var requestSent = false
@@ -39,54 +35,23 @@ class MainActivity : AppCompatActivity(), MainView {
     val mainPresenter: MainPresenter = MainPresenter(this, MainInteractor())
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        FirebaseApp.initializeApp(this)
 
         setSupportActionBar(activity_main_toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(false)
 
-        createProcessor()
-        createFotoApparat()
-        fotoapparatSwitcher = FotoapparatSwitcher.withDefault(fotoapparatFront)  //For switching between back & front camera
-
         if (!hasStarted) {
             doIfGranted(Manifest.permission.CAMERA, REQUEST_CAMERA_PERMISSION) {
-                fotoapparatSwitcher.start()
+                createCameraSource()
                 hasStarted = true
             }
         }
 
         activity_main_imagebutton_switchcamera.setOnClickListener { switchCamera() }
         activity_main_imagebutton_adduser.setOnClickListener { addUser() }
-    }
-
-    private fun createProcessor() {
-        processor = FaceDetectorProcessor.with(this)
-                .listener { faces ->
-                    rectanglesView.setRectangles(faces)// (Optional) Show detected faces on the view.
-                    if (faces.size > 0 && hasStarted && !requestSent) {
-                        if(!Util.isInternetAvailable(applicationContext))
-                            Toast.makeText(applicationContext, "No internet connection", Toast.LENGTH_SHORT).show()
-                        else{
-                            requestSent = true
-
-                            val photoResult = fotoapparatSwitcher.currentFotoapparat.takePicture()
-
-                            showLoading()
-
-                            photoResult
-                                    .toBitmap()
-                                    .whenAvailable { bitmapPhoto ->
-                                        val angleToRotate = bitmapPhoto.rotationDegrees
-                                        val filesDir = applicationContext.filesDir
-                                        mainPresenter.recognizeFace(bitmapPhoto, filesDir, angleToRotate.toFloat())
-                                    }
-                        }
-                    }
-                }
-                .build()
-
     }
 
     override fun showResponse(guess: String?) {
@@ -107,30 +72,6 @@ class MainActivity : AppCompatActivity(), MainView {
         hideLoading()
         requestSent = false
         Toast.makeText(this, message, Toast.LENGTH_LONG).show()
-    }
-
-    private fun createFotoApparat() {
-        fotoapparatBack = Fotoapparat.with(this)
-                .into(cameraView)
-                .frameProcessor(processor)
-                .lensPosition(back())
-                .jpegQuality(50)
-                .build()
-
-        fotoapparatFront = Fotoapparat.with(this)
-                .into(cameraView)
-                .frameProcessor(processor)
-                .lensPosition(front())
-                .jpegQuality(50)
-                .build()
-    }
-
-    fun switchCamera() {
-        if (fotoapparatSwitcher.currentFotoapparat == fotoapparatFront) {
-            fotoapparatSwitcher.switchTo(fotoapparatBack)
-        } else {
-            fotoapparatSwitcher.switchTo(fotoapparatFront)
-        }
     }
 
     fun addUser() {
@@ -160,34 +101,66 @@ class MainActivity : AppCompatActivity(), MainView {
                             dialog.show()
                         },
                         onGranted = {
-                            fotoapparatSwitcher.start()
+                            createCameraSource()
                             hasStarted = true
                         }
                 )
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-        if (!hasStarted) {
-            doIfGranted(Manifest.permission.CAMERA, REQUEST_CAMERA_PERMISSION) {
-                fotoapparatSwitcher.start()
-                hasStarted = true
+    private fun createCameraSource() {
+        // If there's no existing cameraSource, create one.
+        val cameraSourceCopy = cameraSource
+        if (cameraSourceCopy == null) {
+            cameraSource = CameraSource(this, fireFaceOverlay)
+        }
+
+        cameraSource!!.setMachineLearningFrameProcessor(FaceDetectionProcessor())
+    }
+
+    private fun startCameraSource() {
+        val cameraSourceCopy = cameraSource
+        if (cameraSourceCopy != null) {
+            try {
+                if (firePreview == null) {
+                    Log.d(TAG, "resume: Preview is null")
+                }
+                if (fireFaceOverlay == null) {
+                    Log.d(TAG, "resume: graphOverlay is null")
+                }
+                firePreview.start(cameraSource, fireFaceOverlay)
+            } catch (e: IOException) {
+                Log.e(TAG, "Unable to start camera source.", e)
+                cameraSource?.release()
+                cameraSource = null
             }
+
         }
     }
 
-    override fun onStop() {
-        if (hasStarted) {
-            fotoapparatSwitcher.stop()
-            hasStarted = false
-        }
-        super.onStop()
+    fun switchCamera() {
+
+    }
+
+    public override fun onResume() {
+        super.onResume()
+        Log.d(TAG, "onResume")
+        startCameraSource()
+    }
+
+    /** Stops the camera.  */
+    override fun onPause() {
+        super.onPause()
+        firePreview.stop()
     }
 
     override fun onDestroy() {
-        super.onDestroy()
         mainPresenter.onDestroy()
+        val cameraSourceCopy = cameraSource
+        if (cameraSourceCopy != null) {
+            cameraSource?.release()
+        }
+        super.onDestroy()
     }
 
     override fun showLoading() {

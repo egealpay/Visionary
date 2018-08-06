@@ -14,6 +14,7 @@ android {
         targetSdkVersion 27
         versionCode 1
         versionName "1.1"
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -51,10 +52,18 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxandroid:2.0.2"
     implementation 'com.artemzin.rxjava:proguard-rules:1.2.4.0'
 
+    // ML Kit dependencies
+    implementation 'com.google.firebase:firebase-core:16.0.1'
+    implementation 'com.google.firebase:firebase-ml-common:16.0.0'
+    implementation 'com.google.firebase:firebase-ml-vision:16.0.0'
+    implementation 'com.google.firebase:firebase-ml-vision-image-label-model:15.0.0'
+    implementation 'com.google.firebase:firebase-ml-model-interpreter:16.0.0'
+
+    implementation 'com.android.support:multidex:1.0.3'
 
     implementation "com.android.support:design:27.1.1"
     implementation 'com.github.jkwiecien:EasyImage:2.1.0'
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'com.monitise.mea.android:caki:1.0.0-SNAPSHOT@aar'
-
 }
+apply plugin: 'com.google.gms.google-services'
