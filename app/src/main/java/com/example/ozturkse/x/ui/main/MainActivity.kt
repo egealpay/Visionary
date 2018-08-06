@@ -19,13 +19,13 @@ import io.fotoapparat.facedetector.processor.FaceDetectorProcessor
 import io.fotoapparat.parameter.selector.LensPositionSelectors.back
 import io.fotoapparat.parameter.selector.LensPositionSelectors.front
 import kotlinx.android.synthetic.main.activity_main.*
-import java.net.InetAddress
 
 
 class MainActivity : AppCompatActivity(), MainView {
 
     companion object {
         const val REQUEST_CAMERA_PERMISSION = 0
+        const val INTENT_ADD_USER = "add_user"
     }
 
     private lateinit var fotoapparatBack: Fotoapparat
@@ -41,6 +41,9 @@ class MainActivity : AppCompatActivity(), MainView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        setSupportActionBar(activity_main_toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(false)
 
         createProcessor()
         createFotoApparat()
@@ -130,7 +133,9 @@ class MainActivity : AppCompatActivity(), MainView {
     }
 
     fun addUser() {
-        startActivity(Intent(this, LandingActivity::class.java))
+        val intent = Intent(this, LandingActivity::class.java)
+        intent.putExtra(INTENT_ADD_USER, true)
+        startActivity(intent)
         finish()
     }
 
@@ -140,7 +145,7 @@ class MainActivity : AppCompatActivity(), MainView {
             grantResults: IntArray
     ) {
         when (requestCode) {
-            LandingActivity.REQUEST_CAMERA_PERMISSION ->
+            MainActivity.REQUEST_CAMERA_PERMISSION ->
                 handlePermissionsResult(permissions, grantResults,
                         onDenied = {
                             val builder = AlertDialog.Builder(this@MainActivity)

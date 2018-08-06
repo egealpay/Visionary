@@ -7,90 +7,41 @@
         android:id="@+id/activity_landing_progressbar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center"
+        android:visibility="gone" />
 
-    <LinearLayout
-        android:id="@+id/activity_landing_linearlayout"
+    <android.support.v7.widget.Toolbar
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <android.support.v7.widget.Toolbar
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:background="@color/colorPrimary"
-            android:elevation="4dp"
-            android:minHeight="?attr/actionBarSize">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/app_name"
-                android:textColor="@android:color/white"
-                android:textSize="20sp" />
-
-        </android.support.v7.widget.Toolbar>
-
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/activity_landing_edittext_fullname"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="40dp"
-            android:hint="@string/fullname_hint" />
+        android:layout_height="60dp"
+        android:background="@color/colorPrimary"
+        android:elevation="4dp"
+        android:minHeight="?attr/actionBarSize">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
-            android:text="@string/add_photos"
-            android:textSize="16sp" />
+            android:text="@string/app_name"
+            android:textColor="@android:color/white"
+            android:textSize="20sp" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="end"
-            android:orientation="horizontal">
+    </android.support.v7.widget.Toolbar>
 
-            <ImageButton
-                android:id="@+id/activity_landing_imagebutton_gallery"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:layout_marginTop="8dp"
-                android:background="@android:color/transparent"
-                android:src="@drawable/ic_insert_photo_black" />
+    <android.support.design.widget.TextInputEditText
+        android:id="@+id/activity_landing_edittext_fullname"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="40dp"
+        android:hint="@string/fullname_hint" />
 
-            <ImageButton
-                android:id="@+id/activity_landing_imagebutton_camera"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:layout_marginTop="8dp"
-                android:background="@android:color/transparent"
-                android:src="@drawable/ic_camera_alt_black" />
-
-        </LinearLayout>
-
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/activity_landing_recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:padding="10dp" />
-
-        <Button
-            style= "@style/Widget.AppCompat.Button.Colored"
-            android:id="@+id/activity_landing_button_register"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:layout_margin="16dp"
-            android:text="@string/register"
-            />
-
-    </LinearLayout>
+    <Button
+        android:id="@+id/activity_landing_button_continue"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|end"
+        android:layout_marginEnd="32dp"
+        android:layout_marginTop="64dp"
+        android:text="@string/button_continue" />
 
 </FrameLayout>
