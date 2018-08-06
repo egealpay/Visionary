@@ -139,7 +139,14 @@ class MainActivity : AppCompatActivity(), MainView {
     }
 
     fun switchCamera() {
-
+        if(cameraSource?.cameraFacing == CameraSource.CAMERA_FACING_BACK){
+            cameraSource?.setFacing(CameraSource.CAMERA_FACING_FRONT)
+        }
+        else{
+            cameraSource?.setFacing(CameraSource.CAMERA_FACING_BACK)
+        }
+        firePreview.stop()
+        startCameraSource()
     }
 
     public override fun onResume() {
