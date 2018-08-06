@@ -67,6 +67,7 @@ class LandingActivity : AppCompatActivity(), LandingView {
 
         doIfGranted(Manifest.permission.CAMERA, LandingActivity.REQUEST_CAMERA_PERMISSION) {
             EasyImage.openCameraForImage(this, 0)
+            Toast.makeText(applicationContext, "Now, take a selfie!", Toast.LENGTH_LONG).show()
         }
     }
 
