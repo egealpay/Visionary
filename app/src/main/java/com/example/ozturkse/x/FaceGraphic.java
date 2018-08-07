@@ -87,8 +87,8 @@ public class FaceGraphic extends GraphicOverlay.Graphic {
     float y = translateY(face.getBoundingBox().centerY());
     canvas.drawText(
         "happiness: " + String.format("%.2f", face.getSmilingProbability()),
-        x + ID_X_OFFSET * 3,
-        y - ID_Y_OFFSET,
+        x + ID_X_OFFSET * 10,
+        y - ID_Y_OFFSET *10 ,
         idPaint);
 
     // Draws a bounding box around the face.
