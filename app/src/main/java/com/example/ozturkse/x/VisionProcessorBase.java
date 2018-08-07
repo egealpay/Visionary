@@ -17,6 +17,7 @@ import android.graphics.Bitmap;
 import android.media.Image;
 import android.support.annotation.NonNull;
 
+import com.example.ozturkse.x.ui.main.MainActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -91,7 +92,7 @@ public abstract class VisionProcessorBase<T> implements VisionImageProcessor {
     }
 
     private void detectInVisionImage(
-            FirebaseVisionImage image,
+            final FirebaseVisionImage image,
             final FrameMetadata metadata,
             final GraphicOverlay graphicOverlay) {
         detectInImage(image)
@@ -102,6 +103,7 @@ public abstract class VisionProcessorBase<T> implements VisionImageProcessor {
                                 shouldThrottle.set(false);
                                 VisionProcessorBase.this.onSuccess(results, metadata,
                                         graphicOverlay);
+                                MainActivity.Companion.updateBitmap(image.getBitmapForDebugging());
                             }
                         })
                 .addOnFailureListener(

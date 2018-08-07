@@ -2,6 +2,7 @@ package com.example.ozturkse.x.ui.main
 
 import android.Manifest
 import android.content.Intent
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
@@ -16,6 +17,7 @@ import com.google.firebase.FirebaseApp
 import com.monitise.mea.android.caki.extensions.doIfGranted
 import com.monitise.mea.android.caki.extensions.handlePermissionsResult
 import kotlinx.android.synthetic.main.activity_main.*
+import java.io.File
 import java.io.IOException
 
 
@@ -25,14 +27,28 @@ class MainActivity : AppCompatActivity(), MainView {
         const val REQUEST_CAMERA_PERMISSION = 0
         const val INTENT_ADD_USER = "add_user"
         const val TAG = "MainActivity"
+
+        private lateinit var bitmap: Bitmap
+        private lateinit var filesDirector: File
+        private lateinit var mainPresenter: MainPresenter
+
+        private var requestSent = false
+
+        fun updateBitmap(bitmap: Bitmap) {
+            this.bitmap = bitmap
+        }
+
+        fun recognizeFace() {
+            if (!requestSent) {
+                mainPresenter.recognizeFace(bitmap, filesDirector, 0f)
+                requestSent = true
+            }
+        }
     }
 
     private var cameraSource: CameraSource? = null
 
     private var hasStarted: Boolean = false
-    private var requestSent = false
-
-    val mainPresenter: MainPresenter = MainPresenter(this, MainInteractor())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +58,9 @@ class MainActivity : AppCompatActivity(), MainView {
 
         setSupportActionBar(activity_main_toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(false)
+
+        filesDirector = application.filesDir
+        mainPresenter = MainPresenter(this, MainInteractor())
 
         if (!hasStarted) {
             doIfGranted(Manifest.permission.CAMERA, REQUEST_CAMERA_PERMISSION) {
@@ -69,7 +88,6 @@ class MainActivity : AppCompatActivity(), MainView {
     }
 
     override fun showError(message: String?) {
-        hideLoading()
         requestSent = false
         Toast.makeText(this, message, Toast.LENGTH_LONG).show()
     }
@@ -139,10 +157,9 @@ class MainActivity : AppCompatActivity(), MainView {
     }
 
     fun switchCamera() {
-        if(cameraSource?.cameraFacing == CameraSource.CAMERA_FACING_BACK){
+        if (cameraSource?.cameraFacing == CameraSource.CAMERA_FACING_BACK) {
             cameraSource?.setFacing(CameraSource.CAMERA_FACING_FRONT)
-        }
-        else{
+        } else {
             cameraSource?.setFacing(CameraSource.CAMERA_FACING_BACK)
         }
         firePreview.stop()
