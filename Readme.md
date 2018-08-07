@@ -1,30 +1,24 @@
 
-### PokerFace
-Upload a face image and the app will recognize you when it sees you later.   
+## PokerFace
+Take a selfie and the app will recognize you next time.    
 
-[the great article](https://medium.com/@ageitgey/machine-learning-is-fun-part-4-modern-face-recognition-with-deep-learning-c3cffc121d78)
+## Design 
+There is an Android app and a backend server.
+
+The app detects the face and the server recognizes it. 
 
 ### Android
-built with Kotlin, Retrofit, Rx, Picasso, FotoApparat, FaceDetector
+built with Kotlin, Retrofit, Rx, Picasso and MLkit (Firebase ML Vision)
 
-https://github.com/RedApparat/Fotoapparat
+### Backend API 
 
-https://github.com/RedApparat/FaceDetector
+https://poker-face-api.herokuapp.com
 
-### API 
-
-https://facerecapi.herokuapp.com
-
-- python backend built on sanic framework and face_recognition library. 
-
-https://github.com/channelcat/sanic
+- python backend built on Flask framework and face_recognition library (built on dlib) 
 
 https://github.com/ageitgey/face_recognition
 
 http://dlib.net
-
-https://heroku.com
-
 
 #### endpoints 
 
@@ -34,11 +28,11 @@ https://heroku.com
 
 <b>/predict</b>
 
-- accepts a photo and returns a name guess 
+- accepts a photo and returns a name guess and status
 
 #### build and deploy
  
-- backend runs in a Docker container, 
+- the server app runs in a Docker container, 
 
 - runtime is python 3.6 and gunicorn WSGI server
 
@@ -49,4 +43,7 @@ https://heroku.com
 
 * [container docs](https://devcenter.heroku.com/articles/container-registry-and-runtime)
 
+## Theory
+
+[the great article](https://medium.com/@ageitgey/machine-learning-is-fun-part-4-modern-face-recognition-with-deep-learning-c3cffc121d78)
 
