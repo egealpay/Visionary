@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity(), MainView {
         }
 
         fun recognizeFace() {
-            if(Util.isInternetAvailable(appContext)){
+            if(!Util.isInternetAvailable(appContext)){
                 Toast.makeText(appContext, "No internet connection", Toast.LENGTH_SHORT).show()
                 return
             }
