@@ -31,11 +31,6 @@ public class FaceGraphic extends GraphicOverlay.Graphic {
     private static final float ID_X_OFFSET = 50.0f;
     private static final float BOX_STROKE_WIDTH = 5.0f;
 
-    private static final int[] COLOR_CHOICES = {
-            Color.BLUE, Color.CYAN, Color.GREEN, Color.MAGENTA, Color.RED, Color.WHITE, Color.YELLOW
-    };
-    private static int currentColorIndex = 0;
-
     private int facing;
 
     private final Paint facePositionPaint;
@@ -47,8 +42,7 @@ public class FaceGraphic extends GraphicOverlay.Graphic {
     public FaceGraphic(GraphicOverlay overlay) {
         super(overlay);
 
-        currentColorIndex = (currentColorIndex + 1) % COLOR_CHOICES.length;
-        final int selectedColor = COLOR_CHOICES[currentColorIndex];
+        final int selectedColor = Color.GREEN;
 
         facePositionPaint = new Paint();
         facePositionPaint.setColor(selectedColor);

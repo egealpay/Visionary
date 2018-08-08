@@ -130,7 +130,7 @@ class LandingActivity : AppCompatActivity(), LandingView {
     }
 
     override fun showResponse(answer: String?) {
-        Toast.makeText(this, answer, Toast.LENGTH_LONG).show()
+        Toast.makeText(this, "Hello $answer", Toast.LENGTH_LONG).show()
 
         sharedPreferences.edit {
             putBoolean(HAS_REGISTERED_KEY, true)
