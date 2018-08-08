@@ -11,11 +11,7 @@ class MainPresenter(
 ) : MainInteractor.OnFaceRecognitionReceivedListener {
     override fun onSuccessFaceRecognition(result: PredictionResponse) {
         mainView?.hideLoading()
-
-        if (result.status == "found")
-            mainView?.showResponse(result.guess)
-        else
-            mainView?.showError("I don't know who you are. Please try again")
+        mainView?.showResponse(result.guess)
     }
 
     override fun onErrorFaceRecognition(message: String?) {

@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
+import android.os.Handler
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
@@ -29,7 +30,7 @@ class MainActivity : AppCompatActivity(), MainView {
         const val REQUEST_CAMERA_PERMISSION = 0
         const val INTENT_ADD_USER = "add_user"
         const val TAG = "MainActivity"
-        var responseName = "Anyone"
+        var responseName = ""
 
         private lateinit var bitmap: Bitmap
         private lateinit var filesDirector: File
@@ -43,7 +44,7 @@ class MainActivity : AppCompatActivity(), MainView {
         }
 
         fun recognizeFace() {
-            if(Util.isInternetAvailable(appContext)){
+            if (!Util.isInternetAvailable(appContext)) {
                 Toast.makeText(appContext, "No internet connection", Toast.LENGTH_SHORT).show()
                 return
             }
@@ -86,19 +87,13 @@ class MainActivity : AppCompatActivity(), MainView {
 
     override fun showResponse(guess: String?) {
         activity_main_progressbar.visibility = View.INVISIBLE
-        /*val builder = AlertDialog.Builder(this@MainActivity)
-        builder.setTitle("Found")
-        builder.setMessage(guess)
-        builder.setPositiveButton("OK") { _, _ ->
-            requestSent = false
-        }
-
-        val dialog: AlertDialog = builder.create()
-        dialog.setCanceledOnTouchOutside(false)
-        dialog.show()*/
 
         responseName = guess!!
-        requestSent = false
+        Handler().postDelayed(
+                {
+                    requestSent = false
+                }, 1500
+        )
     }
 
     override fun showError(message: String?) {

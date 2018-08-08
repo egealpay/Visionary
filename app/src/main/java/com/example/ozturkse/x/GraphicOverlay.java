@@ -77,7 +77,7 @@ public class GraphicOverlay extends View {
      *
      * @param canvas drawing canvas
      */
-    public abstract void draw(Canvas canvas, String response);
+    public abstract void draw(Canvas canvas);
 
     /**
      * Adjusts a horizontal value of the supplied value from the preview scale to the view scale.
@@ -172,7 +172,7 @@ public class GraphicOverlay extends View {
       }
 
       for (Graphic graphic : graphics) {
-        graphic.draw(canvas, MainActivity.Companion.getResponseName());
+        graphic.draw(canvas);
       }
     }
   }

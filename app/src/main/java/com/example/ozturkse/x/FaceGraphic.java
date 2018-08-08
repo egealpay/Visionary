@@ -75,7 +75,7 @@ public class FaceGraphic extends GraphicOverlay.Graphic {
 
   /** Draws the face annotations for position on the supplied canvas. */
   @Override
-  public void draw(Canvas canvas, String response) {
+  public void draw(Canvas canvas) {
     FirebaseVisionFace face = firebaseVisionFace;
     if (face == null) {
       return;
@@ -87,13 +87,13 @@ public class FaceGraphic extends GraphicOverlay.Graphic {
     float y = translateY(face.getBoundingBox().centerY());
     canvas.drawText(
         "happiness: " + String.format("%.2f", face.getSmilingProbability()),
-        x + ID_X_OFFSET * 10,
-        y - ID_Y_OFFSET *10 ,
+        x + ID_X_OFFSET * 7,
+        y - ID_Y_OFFSET * 7 ,
         idPaint);
     canvas.drawText(
-            response,
-            x + ID_X_OFFSET * 3,
-            y - ID_Y_OFFSET * 3,
+            MainActivity.Companion.getResponseName(),
+            x - ID_X_OFFSET * 6,
+            y - ID_Y_OFFSET * 6,
             idPaint
     );
 
