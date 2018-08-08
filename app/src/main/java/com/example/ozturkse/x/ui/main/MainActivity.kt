@@ -1,6 +1,7 @@
 package com.example.ozturkse.x.ui.main
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
@@ -13,6 +14,7 @@ import com.example.ozturkse.x.CameraSource
 import com.example.ozturkse.x.FaceDetectionProcessor
 import com.example.ozturkse.x.R
 import com.example.ozturkse.x.ui.landing.LandingActivity
+import com.example.ozturkse.x.util.Util
 import com.google.firebase.FirebaseApp
 import com.monitise.mea.android.caki.extensions.doIfGranted
 import com.monitise.mea.android.caki.extensions.handlePermissionsResult
@@ -30,6 +32,7 @@ class MainActivity : AppCompatActivity(), MainView {
 
         private lateinit var bitmap: Bitmap
         private lateinit var filesDirector: File
+        private lateinit var appContext: Context
         private lateinit var mainPresenter: MainPresenter
 
         private var requestSent = false
@@ -39,6 +42,11 @@ class MainActivity : AppCompatActivity(), MainView {
         }
 
         fun recognizeFace() {
+            if(Util.isInternetAvailable(appContext)){
+                Toast.makeText(appContext, "No internet connection", Toast.LENGTH_SHORT).show()
+                return
+            }
+
             if (!requestSent) {
                 mainPresenter.recognizeFace(bitmap, filesDirector, 0f)
                 requestSent = true
@@ -59,6 +67,7 @@ class MainActivity : AppCompatActivity(), MainView {
         setSupportActionBar(activity_main_toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(false)
 
+        appContext = applicationContext
         filesDirector = application.filesDir
         mainPresenter = MainPresenter(this, MainInteractor())
 

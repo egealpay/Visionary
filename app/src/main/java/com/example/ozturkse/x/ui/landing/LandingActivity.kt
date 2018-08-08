@@ -11,6 +11,7 @@ import android.view.View
 import android.widget.Toast
 import com.example.ozturkse.x.R
 import com.example.ozturkse.x.ui.main.MainActivity
+import com.example.ozturkse.x.util.Util
 import com.monitise.mea.android.caki.extensions.doIfGranted
 import com.monitise.mea.android.caki.extensions.edit
 import com.monitise.mea.android.caki.extensions.handlePermissionsResult
@@ -89,6 +90,11 @@ class LandingActivity : AppCompatActivity(), LandingView {
             }
 
             override fun onImagesPicked(imageFiles: List<File>, source: EasyImage.ImageSource, type: Int) {
+                if (!Util.isInternetAvailable(applicationContext)) {
+                    Toast.makeText(applicationContext, "No internet connection", Toast.LENGTH_SHORT).show()
+                    return
+                }
+
                 val file = imageFiles[0]
                 val filesDir = applicationContext.filesDir
                 landingPresenter.register(activity_landing_edittext_fullname.text.toString(), file, filesDir)
