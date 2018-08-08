@@ -29,6 +29,7 @@ class MainActivity : AppCompatActivity(), MainView {
         const val REQUEST_CAMERA_PERMISSION = 0
         const val INTENT_ADD_USER = "add_user"
         const val TAG = "MainActivity"
+        var responseName = "Anyone"
 
         private lateinit var bitmap: Bitmap
         private lateinit var filesDirector: File
@@ -52,6 +53,7 @@ class MainActivity : AppCompatActivity(), MainView {
                 requestSent = true
             }
         }
+
     }
 
     private var cameraSource: CameraSource? = null
@@ -84,7 +86,7 @@ class MainActivity : AppCompatActivity(), MainView {
 
     override fun showResponse(guess: String?) {
         activity_main_progressbar.visibility = View.INVISIBLE
-        val builder = AlertDialog.Builder(this@MainActivity)
+        /*val builder = AlertDialog.Builder(this@MainActivity)
         builder.setTitle("Found")
         builder.setMessage(guess)
         builder.setPositiveButton("OK") { _, _ ->
@@ -93,7 +95,10 @@ class MainActivity : AppCompatActivity(), MainView {
 
         val dialog: AlertDialog = builder.create()
         dialog.setCanceledOnTouchOutside(false)
-        dialog.show()
+        dialog.show()*/
+
+        responseName = guess!!
+        requestSent = false
     }
 
     override fun showError(message: String?) {

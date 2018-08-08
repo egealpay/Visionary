@@ -18,6 +18,7 @@ import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.view.View;
 
+import com.example.ozturkse.x.ui.main.MainActivity;
 import com.google.android.gms.vision.CameraSource;
 
 import java.util.HashSet;
@@ -76,7 +77,7 @@ public class GraphicOverlay extends View {
      *
      * @param canvas drawing canvas
      */
-    public abstract void draw(Canvas canvas);
+    public abstract void draw(Canvas canvas, String response);
 
     /**
      * Adjusts a horizontal value of the supplied value from the preview scale to the view scale.
@@ -171,7 +172,7 @@ public class GraphicOverlay extends View {
       }
 
       for (Graphic graphic : graphics) {
-        graphic.draw(canvas);
+        graphic.draw(canvas, MainActivity.Companion.getResponseName());
       }
     }
   }

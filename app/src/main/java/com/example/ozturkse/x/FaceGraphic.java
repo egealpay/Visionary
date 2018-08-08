@@ -75,7 +75,7 @@ public class FaceGraphic extends GraphicOverlay.Graphic {
 
   /** Draws the face annotations for position on the supplied canvas. */
   @Override
-  public void draw(Canvas canvas) {
+  public void draw(Canvas canvas, String response) {
     FirebaseVisionFace face = firebaseVisionFace;
     if (face == null) {
       return;
@@ -90,6 +90,12 @@ public class FaceGraphic extends GraphicOverlay.Graphic {
         x + ID_X_OFFSET * 10,
         y - ID_Y_OFFSET *10 ,
         idPaint);
+    canvas.drawText(
+            response,
+            x + ID_X_OFFSET * 3,
+            y - ID_Y_OFFSET * 3,
+            idPaint
+    );
 
     // Draws a bounding box around the face.
     float xOffset = scaleX(face.getBoundingBox().width() / 2.0f);
