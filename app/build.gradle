@@ -4,7 +4,7 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
-
+apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 27
@@ -35,11 +35,13 @@ ext {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    // support
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.android.support.constraint:constraint-layout:1.1.2'
+    implementation 'com.android.support:multidex:1.0.3'
+    implementation "com.android.support:design:27.1.1"
 
-    implementation 'io.fotoapparat.fotoapparat:library:1.5.0'
-    implementation 'io.fotoapparat:facedetector:1.0.0'
 
     // network
     implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
@@ -59,11 +61,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-ml-vision-image-label-model:15.0.0'
     implementation 'com.google.firebase:firebase-ml-model-interpreter:16.0.0'
 
-    implementation 'com.android.support:multidex:1.0.3'
-
-    implementation "com.android.support:design:27.1.1"
+    // image libraries
     implementation 'com.github.jkwiecien:EasyImage:2.1.0'
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'com.monitise.mea.android:caki:1.0.0-SNAPSHOT@aar'
 }
-apply plugin: 'com.google.gms.google-services'
