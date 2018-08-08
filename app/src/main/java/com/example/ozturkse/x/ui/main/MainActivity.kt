@@ -88,7 +88,13 @@ class MainActivity : AppCompatActivity(), MainView {
     override fun showResponse(guess: String?) {
         activity_main_progressbar.visibility = View.INVISIBLE
 
-        responseName = guess!!
+        if(guess == "anyone"){
+            responseName = ""
+        }
+        else{
+            responseName = guess!!
+        }
+
         Handler().postDelayed(
                 {
                     requestSent = false
