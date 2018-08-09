@@ -69,8 +69,6 @@ class MainActivity : AppCompatActivity(), MainView {
 
     private var cameraSource: CameraSource? = null
 
-    private var hasStarted: Boolean = false
-
     private var selectedModel = FACE_DETECTION
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -87,11 +85,9 @@ class MainActivity : AppCompatActivity(), MainView {
         filesDirector = application.filesDir
         mainPresenter = MainPresenter(this, MainInteractor())
 
-        if (!hasStarted) {
-            doIfGranted(Manifest.permission.CAMERA, REQUEST_CAMERA_PERMISSION) {
-                createCameraSource(selectedModel)
-                hasStarted = true
-            }
+
+        doIfGranted(Manifest.permission.CAMERA, REQUEST_CAMERA_PERMISSION) {
+            createCameraSource(selectedModel)
         }
 
         activity_main_imagebutton_switchcamera.setOnClickListener { switchCamera() }
@@ -111,18 +107,21 @@ class MainActivity : AppCompatActivity(), MainView {
                 selectedModel = FACE_DETECTION
                 doIfGranted(Manifest.permission.CAMERA, REQUEST_CAMERA_PERMISSION) {
                     createCameraSource(selectedModel)
+                    startCameraSource()
                 }
             }
             R.id.menu_barcode -> {
                 selectedModel = BARCODE_DETECTION
                 doIfGranted(Manifest.permission.CAMERA, REQUEST_CAMERA_PERMISSION) {
                     createCameraSource(selectedModel)
+                    startCameraSource()
                 }
             }
             R.id.menu_image -> {
                 selectedModel = IMAGE_LABEL_DETECTION
                 doIfGranted(Manifest.permission.CAMERA, REQUEST_CAMERA_PERMISSION) {
                     createCameraSource(selectedModel)
+                    startCameraSource()
                 }
             }
         }
@@ -178,7 +177,6 @@ class MainActivity : AppCompatActivity(), MainView {
                         },
                         onGranted = {
                             createCameraSource(selectedModel)
-                            hasStarted = true
                         }
                 )
         }
@@ -190,7 +188,6 @@ class MainActivity : AppCompatActivity(), MainView {
         if (cameraSourceCopy == null) {
             cameraSource = CameraSource(this, fireFaceOverlay)
         }
-
 
         when (model) {
             FACE_DETECTION -> {
@@ -207,7 +204,6 @@ class MainActivity : AppCompatActivity(), MainView {
             }
             else -> Log.e(TAG, "Unknown model: $model")
         }
-
     }
 
     private fun startCameraSource() {
