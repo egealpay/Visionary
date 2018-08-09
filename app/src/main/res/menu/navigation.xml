@@ -3,12 +3,23 @@
 
     <item
         android:id="@+id/navigation_face"
-        android:icon="@drawable/ic_camera_alt_black"
-        android:title="@string/app_name" />
+        android:icon="@drawable/ic_tag_faces_white"
+        android:title="@string/menu_title_face" />
 
     <item
         android:id="@+id/navigation_text"
-        android:icon="@drawable/ic_person_add_white_32dp"
-        android:title="@string/app_name" />
+        android:icon="@drawable/ic_short_text"
+        android:title="@string/menu_title_text" />
+
+    <item
+        android:id="@+id/navigation_barcode"
+        android:icon="@drawable/ic_barcode"
+        android:title="@string/menu_title_barcode" />
+
+
+    <item
+        android:id="@+id/navigation_image"
+        android:icon="@drawable/ic_image"
+        android:title="@string/menu_title_image" />
 
 </menu>
