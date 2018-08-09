@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_face"
+        android:icon="@drawable/ic_camera_alt_black"
+        android:title="@string/app_name" />
+
+    <item
+        android:id="@+id/navigation_text"
+        android:icon="@drawable/ic_person_add_white_32dp"
+        android:title="@string/app_name" />
+
+</menu>

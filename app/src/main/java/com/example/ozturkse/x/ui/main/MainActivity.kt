@@ -6,6 +6,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.os.Handler
+import android.support.design.widget.BottomNavigationView
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
@@ -95,6 +96,33 @@ class MainActivity : AppCompatActivity(), MainView {
 
         activity_main_imagebutton_switchcamera.setOnClickListener { switchCamera() }
         activity_main_imagebutton_adduser.setOnClickListener { addUser() }
+
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+
+    }
+
+    private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
+        firePreview.stop()
+
+        when (item.itemId) {
+            R.id.navigation_face -> {
+                selectedModel = FACE_DETECTION
+                doIfGranted(Manifest.permission.CAMERA, REQUEST_CAMERA_PERMISSION) {
+                    createCameraSource(selectedModel)
+                    startCameraSource()
+                }
+                return@OnNavigationItemSelectedListener true
+            }
+            R.id.navigation_text -> {
+                selectedModel = TEXT_RECOGNITION
+                doIfGranted(Manifest.permission.CAMERA, REQUEST_CAMERA_PERMISSION) {
+                    createCameraSource(selectedModel)
+                    startCameraSource()
+                }
+                return@OnNavigationItemSelectedListener true
+            }
+        }
+        false
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
