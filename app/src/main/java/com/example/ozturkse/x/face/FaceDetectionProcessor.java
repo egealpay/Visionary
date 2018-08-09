@@ -11,11 +11,14 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-package com.example.ozturkse.x;
+package com.example.ozturkse.x.face;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.example.ozturkse.x.FrameMetadata;
+import com.example.ozturkse.x.GraphicOverlay;
+import com.example.ozturkse.x.VisionProcessorBase;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.ml.vision.FirebaseVision;
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;

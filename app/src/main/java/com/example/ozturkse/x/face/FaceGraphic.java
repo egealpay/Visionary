@@ -12,12 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.example.ozturkse.x;
+package com.example.ozturkse.x.face;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
+import com.example.ozturkse.x.GraphicOverlay;
 import com.example.ozturkse.x.ui.main.MainActivity;
 import com.google.firebase.ml.vision.face.FirebaseVisionFace;
 

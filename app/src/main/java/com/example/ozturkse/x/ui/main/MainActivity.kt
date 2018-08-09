@@ -6,17 +6,23 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.os.Handler
+import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import com.example.ozturkse.x.CameraSource
-import com.example.ozturkse.x.FaceDetectionProcessor
+import com.example.ozturkse.x.face.FaceDetectionProcessor
 import com.example.ozturkse.x.R
+import com.example.ozturkse.x.barcode.BarcodeScanningProcessor
+import com.example.ozturkse.x.imagelabeling.ImageLabelingProcessor
 import com.example.ozturkse.x.ui.landing.LandingActivity
 import com.example.ozturkse.x.util.Util
 import com.google.firebase.FirebaseApp
+import com.google.firebase.ml.common.FirebaseMLException
 import com.monitise.mea.android.caki.extensions.doIfGranted
 import com.monitise.mea.android.caki.extensions.handlePermissionsResult
 import kotlinx.android.synthetic.main.activity_main.*
@@ -30,6 +36,10 @@ class MainActivity : AppCompatActivity(), MainView {
         const val REQUEST_CAMERA_PERMISSION = 0
         const val INTENT_ADD_USER = "add_user"
         const val TAG = "MainActivity"
+        const val FACE_DETECTION = "Face Detection"
+        const val BARCODE_DETECTION = "Barcode Detection"
+        const val IMAGE_LABEL_DETECTION = "Label Detection"
+
         var responseName = ""
 
         private lateinit var bitmap: Bitmap
@@ -61,6 +71,8 @@ class MainActivity : AppCompatActivity(), MainView {
 
     private var hasStarted: Boolean = false
 
+    private var selectedModel = FACE_DETECTION
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -69,6 +81,7 @@ class MainActivity : AppCompatActivity(), MainView {
 
         setSupportActionBar(activity_main_toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(false)
+        activity_main_toolbar.overflowIcon = ContextCompat.getDrawable(applicationContext, R.drawable.ic_more_vert)
 
         appContext = applicationContext
         filesDirector = application.filesDir
@@ -76,13 +89,44 @@ class MainActivity : AppCompatActivity(), MainView {
 
         if (!hasStarted) {
             doIfGranted(Manifest.permission.CAMERA, REQUEST_CAMERA_PERMISSION) {
-                createCameraSource()
+                createCameraSource(selectedModel)
                 hasStarted = true
             }
         }
 
         activity_main_imagebutton_switchcamera.setOnClickListener { switchCamera() }
         activity_main_imagebutton_adduser.setOnClickListener { addUser() }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.detection_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        firePreview.stop()
+
+        when (item?.itemId) {
+            R.id.menu_face -> {
+                selectedModel = FACE_DETECTION
+                doIfGranted(Manifest.permission.CAMERA, REQUEST_CAMERA_PERMISSION) {
+                    createCameraSource(selectedModel)
+                }
+            }
+            R.id.menu_barcode -> {
+                selectedModel = BARCODE_DETECTION
+                doIfGranted(Manifest.permission.CAMERA, REQUEST_CAMERA_PERMISSION) {
+                    createCameraSource(selectedModel)
+                }
+            }
+            R.id.menu_image -> {
+                selectedModel = IMAGE_LABEL_DETECTION
+                doIfGranted(Manifest.permission.CAMERA, REQUEST_CAMERA_PERMISSION) {
+                    createCameraSource(selectedModel)
+                }
+            }
+        }
+        return false
     }
 
     override fun showResponse(guess: String?) {
@@ -133,21 +177,37 @@ class MainActivity : AppCompatActivity(), MainView {
                             dialog.show()
                         },
                         onGranted = {
-                            createCameraSource()
+                            createCameraSource(selectedModel)
                             hasStarted = true
                         }
                 )
         }
     }
 
-    private fun createCameraSource() {
+    private fun createCameraSource(model: String) {
         // If there's no existing cameraSource, create one.
         val cameraSourceCopy = cameraSource
         if (cameraSourceCopy == null) {
             cameraSource = CameraSource(this, fireFaceOverlay)
         }
 
-        cameraSource!!.setMachineLearningFrameProcessor(FaceDetectionProcessor())
+
+        when (model) {
+            FACE_DETECTION -> {
+                Log.i(TAG, "Using Face Detector Processor")
+                cameraSource!!.setMachineLearningFrameProcessor(FaceDetectionProcessor())
+            }
+            BARCODE_DETECTION -> {
+                Log.i(TAG, "Using Barcode Detector Processor")
+                cameraSource!!.setMachineLearningFrameProcessor(BarcodeScanningProcessor())
+            }
+            IMAGE_LABEL_DETECTION -> {
+                Log.i(TAG, "Using Image Label Detector Processor")
+                cameraSource!!.setMachineLearningFrameProcessor(ImageLabelingProcessor())
+            }
+            else -> Log.e(TAG, "Unknown model: $model")
+        }
+
     }
 
     private fun startCameraSource() {
@@ -210,4 +270,5 @@ class MainActivity : AppCompatActivity(), MainView {
     override fun hideLoading() {
         activity_main_progressbar.visibility = View.INVISIBLE
     }
+
 }
