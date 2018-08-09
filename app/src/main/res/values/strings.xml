@@ -7,9 +7,6 @@
     <string name="take_selfie">TAKE A SELFIE</string>
     <string name="photo_not_stored">Your photo will be deleted in 24 hours.</string>
     <string name="give_camera_permission">Please give camera permission from Settings</string>
-    <string name="menu_title_face">Face Detection</string>
-    <string name="menu_title_barcode">Barcode Scanning</string>
-    <string name="menu_title_image">Image Labeling</string>
     <string name="bottom_nav_face">Face</string>
     <string name="bottom_nav_barcode">Barcode</string>
     <string name="bottom_nav_image">Image</string>

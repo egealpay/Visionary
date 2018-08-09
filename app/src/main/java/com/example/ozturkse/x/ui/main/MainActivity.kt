@@ -83,7 +83,6 @@ class MainActivity : AppCompatActivity(), MainView {
 
         setSupportActionBar(activity_main_toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(false)
-        activity_main_toolbar.overflowIcon = ContextCompat.getDrawable(applicationContext, R.drawable.ic_more_vert)
 
         appContext = applicationContext
         filesDirector = application.filesDir

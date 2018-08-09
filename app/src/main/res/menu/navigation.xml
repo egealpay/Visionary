@@ -18,7 +18,7 @@
 
     <item
         android:id="@+id/navigation_text"
-        android:icon="@drawable/ic_text_fields"
+        android:icon="@drawable/ic_short_text"
         android:title="@string/bottom_nav_text" />
 
 </menu>
