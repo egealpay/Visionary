@@ -1,5 +1,0 @@
-Flask
-requests
-face_recognition
-gunicorn
-gevent

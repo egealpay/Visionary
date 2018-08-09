@@ -38,12 +38,13 @@ RUN cd ~ && \
 
 # copy files required for the app to run
 COPY . /root/app
-WORKDIR /root/app/webapp
 
+WORKDIR /root/app
 # install python API requirements
 RUN pip3 install -r requirements.txt
 
+WORKDIR /root/app/webapp
 # Run the app.  CMD is required to run on Heroku
 # $PORT is set by Heroku
-CMD gunicorn --bind 0.0.0.0:$PORT wsgi -k gevent --worker-connections=3 --timeout=12 --max-requests=100 --keep-alive=2
+CMD gunicorn --bind 0.0.0.0:$PORT wsgi -k gevent --worker-connections=10 --timeout=30 --max-requests=1200 --keep-alive=2
 
