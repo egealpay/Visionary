@@ -113,6 +113,22 @@ class MainActivity : AppCompatActivity(), MainView {
                 }
                 return@OnNavigationItemSelectedListener true
             }
+            R.id.navigation_barcode -> {
+                selectedModel = BARCODE_DETECTION
+                doIfGranted(Manifest.permission.CAMERA, REQUEST_CAMERA_PERMISSION) {
+                    createCameraSource(selectedModel)
+                    startCameraSource()
+                }
+                return@OnNavigationItemSelectedListener true
+            }
+            R.id.navigation_image -> {
+                selectedModel = IMAGE_LABEL_DETECTION
+                doIfGranted(Manifest.permission.CAMERA, REQUEST_CAMERA_PERMISSION) {
+                    createCameraSource(selectedModel)
+                    startCameraSource()
+                }
+                return@OnNavigationItemSelectedListener true
+            }
             R.id.navigation_text -> {
                 selectedModel = TEXT_RECOGNITION
                 doIfGranted(Manifest.permission.CAMERA, REQUEST_CAMERA_PERMISSION) {
@@ -123,47 +139,6 @@ class MainActivity : AppCompatActivity(), MainView {
             }
         }
         false
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.detection_menu, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        firePreview.stop()
-
-        when (item?.itemId) {
-            R.id.menu_face -> {
-                selectedModel = FACE_DETECTION
-                doIfGranted(Manifest.permission.CAMERA, REQUEST_CAMERA_PERMISSION) {
-                    createCameraSource(selectedModel)
-                    startCameraSource()
-                }
-            }
-            R.id.menu_barcode -> {
-                selectedModel = BARCODE_DETECTION
-                doIfGranted(Manifest.permission.CAMERA, REQUEST_CAMERA_PERMISSION) {
-                    createCameraSource(selectedModel)
-                    startCameraSource()
-                }
-            }
-            R.id.menu_image -> {
-                selectedModel = IMAGE_LABEL_DETECTION
-                doIfGranted(Manifest.permission.CAMERA, REQUEST_CAMERA_PERMISSION) {
-                    createCameraSource(selectedModel)
-                    startCameraSource()
-                }
-            }
-            R.id.menu_text -> {
-                selectedModel = TEXT_RECOGNITION
-                doIfGranted(Manifest.permission.CAMERA, REQUEST_CAMERA_PERMISSION) {
-                    createCameraSource(selectedModel)
-                    startCameraSource()
-                }
-            }
-        }
-        return false
     }
 
     override fun showResponse(guess: String?) {

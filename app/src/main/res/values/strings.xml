@@ -10,4 +10,8 @@
     <string name="menu_title_face">Face Detection</string>
     <string name="menu_title_barcode">Barcode Scanning</string>
     <string name="menu_title_image">Image Labeling</string>
+    <string name="bottom_nav_face">Face</string>
+    <string name="bottom_nav_barcode">Barcode</string>
+    <string name="bottom_nav_image">Image</string>
+    <string name="bottom_nav_text">Text</string>
 </resources>
