@@ -88,10 +88,9 @@ class MainActivity : AppCompatActivity(), MainView {
     override fun showResponse(guess: String?) {
         activity_main_progressbar.visibility = View.INVISIBLE
 
-        if(guess == "anyone"){
+        if (guess == "anyone") {
             responseName = ""
-        }
-        else{
+        } else {
             responseName = guess!!
         }
 
@@ -183,6 +182,8 @@ class MainActivity : AppCompatActivity(), MainView {
 
     public override fun onResume() {
         super.onResume()
+        requestSent = false
+        responseName = ""
         Log.d(TAG, "onResume")
         startCameraSource()
     }

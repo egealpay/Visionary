@@ -100,10 +100,10 @@ public abstract class VisionProcessorBase<T> implements VisionImageProcessor {
                         new OnSuccessListener<T>() {
                             @Override
                             public void onSuccess(T results) {
+                                MainActivity.Companion.updateBitmap(image.getBitmapForDebugging());
                                 shouldThrottle.set(false);
                                 VisionProcessorBase.this.onSuccess(results, metadata,
                                         graphicOverlay);
-                                MainActivity.Companion.updateBitmap(image.getBitmapForDebugging());
                             }
                         })
                 .addOnFailureListener(
