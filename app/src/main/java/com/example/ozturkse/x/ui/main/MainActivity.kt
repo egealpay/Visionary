@@ -6,6 +6,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.os.Handler
+import android.support.design.internal.BottomNavigationItemView
 import android.support.design.widget.BottomNavigationView
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
@@ -97,12 +98,14 @@ class MainActivity : AppCompatActivity(), MainView {
         activity_main_imagebutton_adduser.setOnClickListener { addUser() }
 
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+        BottomNavigationViewHelper.removeShiftMode(navigation);
+
 
     }
 
+
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         firePreview.stop()
-
         when (item.itemId) {
             R.id.navigation_face -> {
                 selectedModel = FACE_DETECTION
@@ -120,6 +123,7 @@ class MainActivity : AppCompatActivity(), MainView {
                 }
                 return@OnNavigationItemSelectedListener true
             }
+
             R.id.navigation_image -> {
                 selectedModel = IMAGE_LABEL_DETECTION
                 doIfGranted(Manifest.permission.CAMERA, REQUEST_CAMERA_PERMISSION) {
@@ -128,6 +132,7 @@ class MainActivity : AppCompatActivity(), MainView {
                 }
                 return@OnNavigationItemSelectedListener true
             }
+
             R.id.navigation_text -> {
                 selectedModel = TEXT_RECOGNITION
                 doIfGranted(Manifest.permission.CAMERA, REQUEST_CAMERA_PERMISSION) {

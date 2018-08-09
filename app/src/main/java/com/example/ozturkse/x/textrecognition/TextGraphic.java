@@ -27,7 +27,7 @@ import com.example.ozturkse.x.GraphicOverlay;
  */
 public class TextGraphic extends GraphicOverlay.Graphic {
 
-  private static final int TEXT_COLOR = Color.WHITE;
+  private static final int TEXT_COLOR = Color.GREEN;
   private static final float TEXT_SIZE = 54.0f;
   private static final float STROKE_WIDTH = 4.0f;
 

@@ -36,7 +36,7 @@ public class LabelGraphic extends GraphicOverlay.Graphic {
     this.overlay = overlay;
     this.labels = labels;
     textPaint = new Paint();
-    textPaint.setColor(Color.WHITE);
+    textPaint.setColor(Color.GREEN);
     textPaint.setTextSize(60.0f);
     postInvalidate();
   }

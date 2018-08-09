@@ -52,6 +52,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:layout_marginEnd="16dp"
                 android:background="@android:color/transparent"
                 android:src="@drawable/ic_switch_camera_white_32dp" />
 
@@ -84,6 +85,7 @@
         app:itemBackground="@color/colorPrimary"
         app:itemIconTint="@color/colorWhite"
         app:itemTextColor="@color/colorWhite"
+        app:elevation="20dp"
         app:layout_constraintBottom_toBottomOf="@+id/firePreview"
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/navigation" />
