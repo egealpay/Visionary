@@ -28,6 +28,8 @@ import com.monitise.mea.android.caki.extensions.handlePermissionsResult
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.File
 import java.io.IOException
+import com.example.ozturkse.x.textrecognition.TextRecognitionProcessor
+
 
 
 class MainActivity : AppCompatActivity(), MainView {
@@ -39,6 +41,7 @@ class MainActivity : AppCompatActivity(), MainView {
         const val FACE_DETECTION = "Face Detection"
         const val BARCODE_DETECTION = "Barcode Detection"
         const val IMAGE_LABEL_DETECTION = "Label Detection"
+        const val TEXT_RECOGNITION = "Text Recognition"
 
         var responseName = ""
 
@@ -124,6 +127,13 @@ class MainActivity : AppCompatActivity(), MainView {
                     startCameraSource()
                 }
             }
+            R.id.menu_text -> {
+                selectedModel = TEXT_RECOGNITION
+                doIfGranted(Manifest.permission.CAMERA, REQUEST_CAMERA_PERMISSION) {
+                    createCameraSource(selectedModel)
+                    startCameraSource()
+                }
+            }
         }
         return false
     }
@@ -201,6 +211,10 @@ class MainActivity : AppCompatActivity(), MainView {
             IMAGE_LABEL_DETECTION -> {
                 Log.i(TAG, "Using Image Label Detector Processor")
                 cameraSource!!.setMachineLearningFrameProcessor(ImageLabelingProcessor())
+            }
+            TEXT_RECOGNITION -> {
+                Log.i(TAG, "Using Text Detector Processor")
+                cameraSource!!.setMachineLearningFrameProcessor(TextRecognitionProcessor())
             }
             else -> Log.e(TAG, "Unknown model: $model")
         }
