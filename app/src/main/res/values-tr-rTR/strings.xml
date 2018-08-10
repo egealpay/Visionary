@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">PokerFace</string>
     <string name="fullname_hint">İsim</string>
     <string name="button_continue">Devam</string>
     <string name="take_selfie">Fotoğraf Çek</string>
