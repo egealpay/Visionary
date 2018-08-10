@@ -93,7 +93,7 @@ class LandingActivity : AppCompatActivity(), LandingView {
         }
 
         val builder = AlertDialog.Builder(this@LandingActivity)
-        builder.setTitle("${R.string.welcome} ${activity_landing_edittext_fullname.text}")
+        builder.setTitle("${getString(R.string.welcome)} ${activity_landing_edittext_fullname.text}")
         builder.setMessage(getString(R.string.photo_not_stored))
         builder.setPositiveButton(getString(R.string.take_selfie)) { _, _ ->
             doIfGranted(Manifest.permission.CAMERA, LandingActivity.REQUEST_CAMERA_PERMISSION) {
@@ -156,15 +156,25 @@ class LandingActivity : AppCompatActivity(), LandingView {
     }
 
     override fun showResponse(answer: String?) {
-        val responseText = "${R.string.hello} $answer"
+        val responseText = "${getString(R.string.hello)} $answer"
         Toast.makeText(this, responseText, Toast.LENGTH_LONG).show()
 
-        sharedPreferences.edit {
-            putBoolean(HAS_REGISTERED_KEY, true)
-            apply()
+        if (!sharedPreferences.getBoolean(HAS_REGISTERED_KEY, false)) {
+            sharedPreferences.edit {
+                putBoolean(HAS_REGISTERED_KEY, true)
+                apply()
+            }
+            startActivity(Intent(this, MainActivity::class.java))
+            finish()
         }
+        else{
+            sharedPreferences.edit {
+                putBoolean(HAS_REGISTERED_KEY, true)
+                apply()
+            }
 
-        finish()
+            finish()
+        }
     }
 
     override fun showError(message: String?) {
@@ -185,8 +195,10 @@ class LandingActivity : AppCompatActivity(), LandingView {
 
     override fun onBackPressed() {
         super.onBackPressed()
-        if (!sharedPreferences.getBoolean(HAS_REGISTERED_KEY, false))
+        if (!sharedPreferences.getBoolean(HAS_REGISTERED_KEY, false)) {
             Toast.makeText(applicationContext, R.string.not_registered, Toast.LENGTH_LONG).show()
+            startActivity(Intent(this, MainActivity::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK))
+        }
         finish()
     }
 
