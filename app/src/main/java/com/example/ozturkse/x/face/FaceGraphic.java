@@ -92,14 +92,7 @@ public class FaceGraphic extends GraphicOverlay.Graphic {
 
         int smilingProbability = Math.round(face.getSmilingProbability() * 100);
 
-        if (smilingProbability < 0) {
-            canvas.drawText(
-                    "sad: %" + smilingProbability * -1,
-                    x,
-                    y + ID_Y_OFFSET * 5,
-                    idPaint
-            );
-        } else {
+        if (smilingProbability > 0) {
             canvas.drawText(
                     "happy: %" + smilingProbability,
                     x,
