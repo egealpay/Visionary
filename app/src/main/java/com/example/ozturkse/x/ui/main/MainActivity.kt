@@ -6,34 +6,30 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.os.Handler
-import android.support.design.internal.BottomNavigationItemView
 import android.support.design.widget.BottomNavigationView
 import android.support.design.widget.NavigationView
-import android.support.v4.content.ContextCompat
+import android.support.v4.view.GravityCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
-import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import com.example.ozturkse.x.AboutActivity
 import com.example.ozturkse.x.CameraSource
-import com.example.ozturkse.x.face.FaceDetectionProcessor
 import com.example.ozturkse.x.R
 import com.example.ozturkse.x.barcode.BarcodeScanningProcessor
+import com.example.ozturkse.x.face.FaceDetectionProcessor
 import com.example.ozturkse.x.imagelabeling.ImageLabelingProcessor
+import com.example.ozturkse.x.textrecognition.TextRecognitionProcessor
 import com.example.ozturkse.x.ui.landing.LandingActivity
 import com.example.ozturkse.x.util.Util
 import com.google.firebase.FirebaseApp
-import com.google.firebase.ml.common.FirebaseMLException
 import com.monitise.mea.android.caki.extensions.doIfGranted
 import com.monitise.mea.android.caki.extensions.handlePermissionsResult
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.File
 import java.io.IOException
-import com.example.ozturkse.x.textrecognition.TextRecognitionProcessor
-
 
 
 class MainActivity : AppCompatActivity(), MainView {
@@ -85,12 +81,15 @@ class MainActivity : AppCompatActivity(), MainView {
         FirebaseApp.initializeApp(this)
 
         setSupportActionBar(activity_main_toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(false)
+        supportActionBar?.apply {
+            setDisplayShowTitleEnabled(false)
+            setDisplayHomeAsUpEnabled(true)
+            setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp)
+        }
 
         appContext = applicationContext
         filesDirector = application.filesDir
         mainPresenter = MainPresenter(this, MainInteractor())
-
 
         doIfGranted(Manifest.permission.CAMERA, REQUEST_CAMERA_PERMISSION) {
             createCameraSource(selectedModel)
@@ -102,9 +101,18 @@ class MainActivity : AppCompatActivity(), MainView {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
         BottomNavigationViewHelper.removeShiftMode(navigation)
 
-        nav_view.setNavigationItemSelectedListener(drawerItemSelectedListener)
+        activity_main_nav_view.setNavigationItemSelectedListener(drawerItemSelectedListener)
     }
 
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        return when (item?.itemId) {
+            android.R.id.home -> {
+                activity_main_drawer_layout.openDrawer(GravityCompat.START)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         firePreview.stop()
@@ -150,7 +158,7 @@ class MainActivity : AppCompatActivity(), MainView {
     private val drawerItemSelectedListener = NavigationView.OnNavigationItemSelectedListener { item ->
         when(item.itemId){
             R.id.nav_about -> {
-                drawer_layout.closeDrawers()
+                activity_main_drawer_layout.closeDrawers()
                 startActivity(Intent(this, AboutActivity::class.java))
             }
         }

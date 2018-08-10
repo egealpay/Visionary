@@ -5,10 +5,14 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.support.design.widget.NavigationView
+import android.support.v4.view.GravityCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import com.example.ozturkse.x.AboutActivity
 import com.example.ozturkse.x.R
 import com.example.ozturkse.x.ui.main.MainActivity
 import com.example.ozturkse.x.util.Util
@@ -16,6 +20,7 @@ import com.monitise.mea.android.caki.extensions.doIfGranted
 import com.monitise.mea.android.caki.extensions.edit
 import com.monitise.mea.android.caki.extensions.handlePermissionsResult
 import kotlinx.android.synthetic.main.activity_landing.*
+import kotlinx.android.synthetic.main.activity_main.*
 import pl.aprilapps.easyphotopicker.DefaultCallback
 import pl.aprilapps.easyphotopicker.EasyImage
 import java.io.File
@@ -37,6 +42,13 @@ class LandingActivity : AppCompatActivity(), LandingView {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_landing)
 
+        setSupportActionBar(activity_landing_toolbar)
+        supportActionBar?.apply {
+            setDisplayShowTitleEnabled(false)
+            setDisplayHomeAsUpEnabled(true)
+            setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp)
+        }
+
         val addUser = intent.getBooleanExtra(INTENT_ADD_USER, false)
 
         sharedPreferences = getPreferences(Context.MODE_PRIVATE) ?: return
@@ -52,6 +64,28 @@ class LandingActivity : AppCompatActivity(), LandingView {
                 .setAllowMultiplePickInGallery(true)
 
         activity_landing_button_continue.setOnClickListener { openCameraActivity() }
+
+        activity_landing_nav_view.setNavigationItemSelectedListener(drawerItemSelectedListener)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        return when (item?.itemId) {
+            android.R.id.home -> {
+                activity_landing_drawer_layout.openDrawer(GravityCompat.START)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private val drawerItemSelectedListener = NavigationView.OnNavigationItemSelectedListener { item ->
+        when(item.itemId){
+            R.id.nav_about -> {
+                activity_landing_drawer_layout.closeDrawers()
+                startActivity(Intent(this, AboutActivity::class.java))
+            }
+        }
+        false
     }
 
     override fun onDestroy() {
