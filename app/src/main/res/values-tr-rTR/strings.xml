@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">PokerFace</string>
+    <string name="fullname_hint">İsim</string>
+    <string name="button_continue">Devam</string>
+    <string name="take_selfie">Fotoğraf Çek</string>
+    <string name="photo_not_stored">Bir fotoğrafınla kendini tanıtır mısın</string>
+    <string name="give_camera_permission">Lütfen Ayarlardan kameraya izin verin.</string>
+    <string name="bottom_nav_face">Yüz Tanıma</string>
+    <string name="bottom_nav_barcode">Barkod</string>
+    <string name="bottom_nav_image">Nesne Tanıma</string>
+    <string name="bottom_nav_text">Yazı</string>
+    <string name="no_connection">İnternet bağlantısı yok</string>
+    <string name="not_registered">Yüz tanıma için kayıtlı değilsiniz!</string>
+    <string name="enter_name">Adınızı yazınız</string>
+    <string name="welcome">Hoşgeldin</string>
+    <string name="hello">Merhaba</string>
+</resources>

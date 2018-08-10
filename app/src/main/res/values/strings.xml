@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name">PokerFace</string>
     <string name="fullname_hint">Name</string>
-    <string name="register">Register</string>
     <string name="button_continue">CONTINUE</string>
     <string name="take_selfie">TAKE A SELFIE</string>
     <string name="photo_not_stored">Take a selfie and it will recognize you next time.</string>
@@ -11,4 +10,9 @@
     <string name="bottom_nav_image">Image</string>
     <string name="bottom_nav_text">Text</string>
     <string name="about">About</string>
+    <string name="no_connection">No internet connection</string>
+    <string name="not_registered">You have not registered yet!</string>
+    <string name="enter_name">Please enter your name</string>
+    <string name="welcome">Welcome</string>
+    <string name="hello">Hello</string>
 </resources>
