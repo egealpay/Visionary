@@ -60,7 +60,7 @@ class MainActivity : AppCompatActivity(), MainView {
 
         fun recognizeFace() {
             if (!Util.isInternetAvailable(appContext)) {
-                Toast.makeText(appContext, "No internet connection", Toast.LENGTH_SHORT).show()
+                Toast.makeText(appContext, R.string.no_connection, Toast.LENGTH_SHORT).show()
                 return
             }
 
@@ -185,7 +185,7 @@ class MainActivity : AppCompatActivity(), MainView {
                             val builder = AlertDialog.Builder(this@MainActivity)
                             builder.setTitle(":(")
                             builder.setMessage(
-                                    "In order to use this app, you should give permission to use camera, from Settings!"
+                                    R.string.give_camera_permission
                             )
 
                             val dialog: AlertDialog = builder.create()
