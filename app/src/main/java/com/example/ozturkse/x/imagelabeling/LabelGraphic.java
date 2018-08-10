@@ -44,7 +44,7 @@ public class LabelGraphic extends GraphicOverlay.Graphic {
   @Override
   public synchronized void draw(Canvas canvas) {
     float x = overlay.getWidth() / 4.0f;
-    float y = overlay.getHeight() / 2.0f;
+    float y = overlay.getHeight() / 1.5f;
 
     for (FirebaseVisionLabel label : labels) {
       canvas.drawText(label.getLabel(), x, y, textPaint);

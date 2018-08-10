@@ -15,4 +15,11 @@
     <string name="enter_name">Adınızı yazınız</string>
     <string name="welcome">Hoşgeldin</string>
     <string name="hello">Merhaba</string>
+    <string name="all_rights_reserved">Tüm hakları saklıdır</string>
+    <string name="privacy_statement">
+        Fotoğraflarınız sadece yüz tanıma için sunuculara gönderilir.\n
+        Diğer görevlerde hiçbir bilginiz telefonu terketmez.\n
+        Bilgilerinizin gizliliği esastır.\n
+        Hiçbir veriniz depolanmaz ve başka bir amaç için kullanılmaz.\n
+    </string>
 </resources>

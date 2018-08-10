@@ -15,4 +15,11 @@
     <string name="enter_name">Please enter your name</string>
     <string name="welcome">Welcome</string>
     <string name="hello">Hello</string>
+    <string name="all_rights_reserved">All rights reserved</string>
+    <string name="privacy_statement">
+        Image are only sent to our servers for face recognition.\n
+        Otherwise your images and data does not leave your phone.\n
+        Your data is private, not stored nor used for any other purpose.\n
+    </string>
+
 </resources>
