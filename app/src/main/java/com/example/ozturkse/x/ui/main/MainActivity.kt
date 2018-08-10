@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.support.design.internal.BottomNavigationItemView
 import android.support.design.widget.BottomNavigationView
+import android.support.design.widget.NavigationView
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
@@ -16,6 +17,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import com.example.ozturkse.x.AboutActivity
 import com.example.ozturkse.x.CameraSource
 import com.example.ozturkse.x.face.FaceDetectionProcessor
 import com.example.ozturkse.x.R
@@ -98,9 +100,9 @@ class MainActivity : AppCompatActivity(), MainView {
         activity_main_imagebutton_adduser.setOnClickListener { addUser() }
 
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
-        BottomNavigationViewHelper.removeShiftMode(navigation);
+        BottomNavigationViewHelper.removeShiftMode(navigation)
 
-
+        nav_view.setNavigationItemSelectedListener(drawerItemSelectedListener)
     }
 
 
@@ -145,6 +147,16 @@ class MainActivity : AppCompatActivity(), MainView {
         false
     }
 
+    private val drawerItemSelectedListener = NavigationView.OnNavigationItemSelectedListener { item ->
+        when(item.itemId){
+            R.id.nav_about -> {
+                drawer_layout.closeDrawers()
+                startActivity(Intent(this, AboutActivity::class.java))
+            }
+        }
+        false
+    }
+
     override fun showResponse(guess: String?) {
         activity_main_progressbar.visibility = View.INVISIBLE
 
@@ -170,7 +182,6 @@ class MainActivity : AppCompatActivity(), MainView {
         val intent = Intent(this, LandingActivity::class.java)
         intent.putExtra(INTENT_ADD_USER, true)
         startActivity(intent)
-        finish()
     }
 
     override fun onRequestPermissionsResult(

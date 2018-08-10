@@ -137,7 +137,6 @@ class LandingActivity : AppCompatActivity(), LandingView {
             apply()
         }
 
-        startActivity(Intent(this, MainActivity::class.java))
         finish()
     }
 
@@ -161,7 +160,6 @@ class LandingActivity : AppCompatActivity(), LandingView {
         super.onBackPressed()
         if (!sharedPreferences.getBoolean(HAS_REGISTERED_KEY, false))
             Toast.makeText(applicationContext, "You have not registered yet!", Toast.LENGTH_LONG).show()
-        startActivity(Intent(this, MainActivity::class.java))
         finish()
     }
 
