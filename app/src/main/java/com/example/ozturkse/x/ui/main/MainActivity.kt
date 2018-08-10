@@ -83,8 +83,6 @@ class MainActivity : AppCompatActivity(), MainView {
         setSupportActionBar(activity_main_toolbar)
         supportActionBar?.apply {
             setDisplayShowTitleEnabled(false)
-            setDisplayHomeAsUpEnabled(true)
-            setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp)
         }
 
         appContext = applicationContext
@@ -102,15 +100,9 @@ class MainActivity : AppCompatActivity(), MainView {
         BottomNavigationViewHelper.removeShiftMode(navigation)
 
         activity_main_nav_view.setNavigationItemSelectedListener(drawerItemSelectedListener)
-    }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        return when (item?.itemId) {
-            android.R.id.home -> {
-                activity_main_drawer_layout.openDrawer(GravityCompat.START)
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
+        activity_main_imagebutton_menu.setOnClickListener {
+            activity_main_drawer_layout.openDrawer(GravityCompat.START)
         }
     }
 

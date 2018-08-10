@@ -45,8 +45,6 @@ class LandingActivity : AppCompatActivity(), LandingView {
         setSupportActionBar(activity_landing_toolbar)
         supportActionBar?.apply {
             setDisplayShowTitleEnabled(false)
-            setDisplayHomeAsUpEnabled(true)
-            setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp)
         }
 
         val addUser = intent.getBooleanExtra(INTENT_ADD_USER, false)
@@ -66,15 +64,9 @@ class LandingActivity : AppCompatActivity(), LandingView {
         activity_landing_button_continue.setOnClickListener { openCameraActivity() }
 
         activity_landing_nav_view.setNavigationItemSelectedListener(drawerItemSelectedListener)
-    }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        return when (item?.itemId) {
-            android.R.id.home -> {
-                activity_landing_drawer_layout.openDrawer(GravityCompat.START)
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
+        activity_landing_imagebutton_menu.setOnClickListener {
+            activity_landing_drawer_layout.openDrawer(GravityCompat.START)
         }
     }
 
