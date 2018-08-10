@@ -62,12 +62,12 @@ class LandingActivity : AppCompatActivity(), LandingView {
 
     fun openCameraActivity() {
         if (activity_landing_edittext_fullname.text.toString().trim() == "") {
-            Toast.makeText(applicationContext, "Please enter your name", Toast.LENGTH_SHORT).show()
+            Toast.makeText(applicationContext, R.string.enter_name, Toast.LENGTH_SHORT).show()
             return
         }
 
         val builder = AlertDialog.Builder(this@LandingActivity)
-        builder.setTitle("Welcome ${activity_landing_edittext_fullname.text}")
+        builder.setTitle("${R.string.welcome} ${activity_landing_edittext_fullname.text}")
         builder.setMessage(getString(R.string.photo_not_stored))
         builder.setPositiveButton(getString(R.string.take_selfie)) { _, _ ->
             doIfGranted(Manifest.permission.CAMERA, LandingActivity.REQUEST_CAMERA_PERMISSION) {
@@ -91,7 +91,7 @@ class LandingActivity : AppCompatActivity(), LandingView {
 
             override fun onImagesPicked(imageFiles: List<File>, source: EasyImage.ImageSource, type: Int) {
                 if (!Util.isInternetAvailable(applicationContext)) {
-                    Toast.makeText(applicationContext, "No internet connection", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(applicationContext, R.string.no_connection, Toast.LENGTH_SHORT).show()
                     return
                 }
 
@@ -116,7 +116,7 @@ class LandingActivity : AppCompatActivity(), LandingView {
                     onDenied = {
                         val builder = AlertDialog.Builder(this@LandingActivity)
                         builder.setTitle(":(")
-                        builder.setMessage("In order to use this app, you should give permission, from Settings!")
+                        builder.setMessage(R.string.give_camera_permission)
 
                         val dialog: AlertDialog = builder.create()
                         dialog.setCanceledOnTouchOutside(false)
@@ -130,7 +130,8 @@ class LandingActivity : AppCompatActivity(), LandingView {
     }
 
     override fun showResponse(answer: String?) {
-        Toast.makeText(this, "Hello $answer", Toast.LENGTH_LONG).show()
+        val responseText = "${R.string.hello} $answer"
+        Toast.makeText(this, responseText, Toast.LENGTH_LONG).show()
 
         sharedPreferences.edit {
             putBoolean(HAS_REGISTERED_KEY, true)
@@ -159,7 +160,7 @@ class LandingActivity : AppCompatActivity(), LandingView {
     override fun onBackPressed() {
         super.onBackPressed()
         if (!sharedPreferences.getBoolean(HAS_REGISTERED_KEY, false))
-            Toast.makeText(applicationContext, "You have not registered yet!", Toast.LENGTH_LONG).show()
+            Toast.makeText(applicationContext, R.string.not_registered, Toast.LENGTH_LONG).show()
         finish()
     }
 
