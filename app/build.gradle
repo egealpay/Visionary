@@ -1,15 +1,12 @@
 apply plugin: 'com.android.application'
-
 apply plugin: 'kotlin-android'
-
 apply plugin: 'kotlin-android-extensions'
-
 apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 27
     defaultConfig {
-        applicationId "com.example.ozturkse.x"
+        applicationId "com.commencisstaj18.ozturkse.visionary"
         minSdkVersion 19
         targetSdkVersion 27
         versionCode 1
