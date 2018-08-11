@@ -23,7 +23,7 @@ interface FaceRecognitionApiService {
     ): Observable<PredictionResponse>
 
     companion object {
-        val baseUrl = "http://poker-face-api.herokuapp.com"
+        val baseUrl = "***"
         val network = NetworkModule(baseUrl)
 
         fun create(): FaceRecognitionApiService {

@@ -8,5 +8,6 @@
 .externalNativeBuild
 build
 venv
+/src/google-services.json
 
 __pycache__
