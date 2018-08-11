@@ -49,3 +49,4 @@ http://dlib.net
 
 [the great article](https://medium.com/@ageitgey/machine-learning-is-fun-part-4-modern-face-recognition-with-deep-learning-c3cffc121d78)
 
+Developed by Selim Öztürk & Ege Alpay during Commencis Internship Program 2018
